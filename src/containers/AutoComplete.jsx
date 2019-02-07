@@ -32,7 +32,7 @@ class AutoComplele extends Component {
 
     onChange = e => {
         this.searchEvent$.next(e);
-    };
+    }
 
     onKeyDown = e => {
         const keyCode = e.keyCode;
@@ -50,7 +50,7 @@ class AutoComplele extends Component {
             default:
                 break;
         }
-    };
+    }
 
     render() {
         return (
@@ -100,12 +100,12 @@ class AutoComplele extends Component {
 
 const mapStateToProps = (state) => {
     return state;
-};
+}
 
 const mapDispatchToProps = dispatch => {
     return bindActionCreators({
         autoComplete
-    }, dispatch)
+    }, dispatch);
 }
 
 export default connect(

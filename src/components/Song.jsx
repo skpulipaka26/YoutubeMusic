@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Video = () => ({
+const Song = () => ({
     render() {
         return (
             <div>
@@ -9,4 +9,4 @@ const Video = () => ({
     }
 });
 
-export default Video;
+export default Song;

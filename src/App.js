@@ -10,7 +10,8 @@ import { fetchVideos } from './actions/videos';
 import './App.css';
 
 import Layout from './components/Layout';
-import Video from './components/Video';
+import Songs from './containers/Songs';
+import Song from './components/Song';
 
 class App extends Component {
 
@@ -23,8 +24,9 @@ class App extends Component {
       <BrowserRouter>
         <Layout>
           <Switch>
-            <Route exact path="/video" component={Video}></Route>
-            <Redirect exact to="/video"></Redirect>
+            <Route exact path="/songs" component={Songs} />
+            <Route exact path="/songs/:id" component={Song} />
+            <Redirect exact to="/songs" />
           </Switch>
         </Layout>
       </BrowserRouter>
@@ -36,12 +38,12 @@ const mapStateToProps = ({ videos }) => {
   return {
     ...videos
   }
-};
+}
 
 const mapDispatchToProps = dispatch => {
   return bindActionCreators({
     fetchVideos,
-  }, dispatch)
+  }, dispatch);
 }
 
 export default connect(
