@@ -1,5 +1,5 @@
 {
-  "name": "electron-with-create-react-app",
+  "name": "youtube-music",
   "version": "0.1.0",
   "private": true,
   "devDependencies": {
@@ -28,5 +28,6 @@
     "eject": "react-scripts eject",
     "electron": "electron .",
     "dev": "nf start -p 3000"
-  }
+  },
+  "proxy": "http://localhost:3000"
 }

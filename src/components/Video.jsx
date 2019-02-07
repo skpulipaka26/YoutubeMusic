@@ -4,7 +4,6 @@ const Video = () => ({
     render() {
         return (
             <div>
-               
             </div>
         );
     }

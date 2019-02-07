@@ -1,10 +1,12 @@
 import thunk from 'redux-thunk';
 import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
 
-import videos from './reducers/videos';
+import songs from './reducers/videos';
+import autocomplete from './reducers/autocomplete';
 
-const initialState = {
-    videos: []
+export const initialState = {
+    autocomplete: [],
+    songs: []
 };
 const enhancers = [];
 const middleware = [thunk];
@@ -24,7 +26,7 @@ const composedEnhancers = compose(
 );
 
 export const store = createStore(
-    combineReducers({ videos }),
+    combineReducers({ songs, autocomplete }),
     initialState,
     composedEnhancers
 );
