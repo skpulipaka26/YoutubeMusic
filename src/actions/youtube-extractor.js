@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const YT_EXTRACTOR_BASE_URL = 'https://youtube-dl-26.herokuapp.com/api/info';
+const YT_EXTRACTOR_BASE_URL = 'https://youtubeextractorapi.herokuapp.com/api/info';
 
 export const extractYoutubeVideo = (videoId) => {
     return async () => {
