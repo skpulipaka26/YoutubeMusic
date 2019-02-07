@@ -81,7 +81,8 @@ class AutoComplele extends Component {
                                 width: '100%',
                                 border: '3px solid rgba(0,0,0,.125)',
                                 borderTop: 'none',
-                                backgroundColor: '#fff'
+                                backgroundColor: '#fff',
+                                zIndex: 1
                             }}>
                                 {this.props.autocomplete.map((listItem, index) => (
                                     <li key={index} className="list-group-item m-0"
@@ -101,7 +102,6 @@ class AutoComplele extends Component {
                     </div>
                 </div>
             </div >
-
         );
     }
 }

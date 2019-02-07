@@ -26,16 +26,30 @@ class Songs extends Component {
     }
 
     render() {
-        const songs = this.props.relatedYoutubeSearches;
+        const searches = this.props.youtube.searches || [];
+        const relatedVideos = this.props.youtube.relatedSearches || [];
         return (
-            <div className="row">
-                {songs.map((song) => {
-                    return (
-                        <div key={song.etag} className="col-12">
-                            <Song {...song} onSelect={(id) => this.onSelectYoutubeVideo(id)} />
-                        </div>
-                    );
-                })}
+            <div>
+                <div className="row">
+                    {searches.slice(0, 1).map((song) => {
+                        return (
+                            <div key={song.etag} className="col-12">
+                                <Song {...song} onSelect={(id) => this.onSelectYoutubeVideo(id)} />
+                            </div>
+                        );
+                    })}
+                </div>
+                <hr />
+                <div className="row">
+                    {relatedVideos.length > 0 && (<h6 className="font-weight-bold m-0 p-0">Related Results</h6>)}
+                    {relatedVideos.map((song) => {
+                        return (
+                            <div key={song.etag} className="col-12">
+                                <Song {...song} onSelect={(id) => this.onSelectYoutubeVideo(id)} />
+                            </div>
+                        );
+                    })}
+                </div>
             </div>
         );
     }

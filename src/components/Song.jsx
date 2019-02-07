@@ -9,7 +9,7 @@ const Song = (props) => ({
             <div
                 onClick={() => props.onSelect(song.id.videoId)}
                 className="card my-2" style={{ cursor: 'pointer' }}>
-                <div className="card-body d-flex align-items-center">
+                <div className="d-flex align-items-center">
                     <img
                         className="img-fluid mr-3"
                         style={{ width: '5rem' }}

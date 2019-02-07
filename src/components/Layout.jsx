@@ -10,7 +10,7 @@ const Layout = (props) => ({
     render() {
         return (
             <div>
-                <Navbar bg="dark" variant="dark">
+                <Navbar bg="dark" variant="dark" sticky="top">
                     <Navbar.Brand>
                         <Image src={logo} fluid style={{ width: '50px' }} />
                     </Navbar.Brand>

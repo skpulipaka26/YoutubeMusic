@@ -1,6 +1,9 @@
 import { FETCH_AUTOCOMPLETE } from '../actions/autocomplete';
 
-import { initialState } from '../store';
+const initialState = {
+    autocomplete: []
+}
+
 
 export default (state = initialState, action) => {
     switch (action.type) {
