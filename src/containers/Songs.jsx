@@ -3,25 +3,20 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { Howl, Howler } from 'howler';
-
 import Song from '../components/Song';
 
 import { extractYoutubeVideo } from '../actions/youtube-extractor';
+import { setCurretPlaying } from '../actions/player';
 
 class Songs extends Component {
 
-    componentDidMount() { }
-
-    onSelectYoutubeVideo(videoId) {
-        Howler.unload();
-        this.props.extractYoutubeVideo(videoId).then(res => {
-            const howl = new Howl({
-                src: [res.info.formats[0].url],
-                volume: 0.5,
-                html5: true
+    onSelectYoutubeVideo(song) {
+        this.props.extractYoutubeVideo(song.id.videoId).then(res => {
+            const format = res.info.formats[0];
+            this.props.setCurretPlaying({
+                metadata: song,
+                extractorData: format
             });
-            howl.play();
         });
     }
 
@@ -34,18 +29,17 @@ class Songs extends Component {
                     {searches.slice(0, 1).map((song) => {
                         return (
                             <div key={song.etag} className="col-12">
-                                <Song {...song} onSelect={(id) => this.onSelectYoutubeVideo(id)} />
+                                <Song {...song} onSelect={(song) => this.onSelectYoutubeVideo(song)} />
                             </div>
                         );
                     })}
                 </div>
-                <hr />
                 <div className="row">
-                    {relatedVideos.length > 0 && (<h6 className="font-weight-bold m-0 p-0">Related Results</h6>)}
+                    {relatedVideos.length > 0 && (<h6 className="font-weight-bold m-0 p-0 ml-3">Related Results</h6>)}
                     {relatedVideos.map((song) => {
                         return (
                             <div key={song.etag} className="col-12">
-                                <Song {...song} onSelect={(id) => this.onSelectYoutubeVideo(id)} />
+                                <Song {...song} onSelect={(song) => this.onSelectYoutubeVideo(song)} />
                             </div>
                         );
                     })}
@@ -56,13 +50,12 @@ class Songs extends Component {
 
 }
 
-const mapStateToProps = (state) => {
-    return { ...state };
-}
+const mapStateToProps = state => state;
 
 const mapDispatchToProps = dispatch => {
     return bindActionCreators({
-        extractYoutubeVideo
+        extractYoutubeVideo,
+        setCurretPlaying
     }, dispatch);
 }
 

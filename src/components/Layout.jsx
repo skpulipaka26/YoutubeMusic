@@ -5,6 +5,7 @@ import { Container, Navbar, Image } from 'react-bootstrap';
 import AutoComplete from '../containers/AutoComplete';
 
 import logo from '../assets/logo.png';
+import Player from '../containers/Player';
 
 const Layout = (props) => ({
     render() {
@@ -21,7 +22,10 @@ const Layout = (props) => ({
                         {props.children}
                     </Container>
                 </main>
-            </div>
+                <footer style={{ position: 'fixed', bottom: 0, width: '100vw', backgroundColor: '#343a40', padding: '0.5rem 0', color: 'white' }}>
+                    <Player />
+                </footer>
+            </div >
         );
     }
 });

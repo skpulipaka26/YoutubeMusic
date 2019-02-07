@@ -3,6 +3,7 @@ import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
 
 import youtube from './reducers/youtube';
 import autocomplete from './reducers/autocomplete';
+import player from './reducers/player';
 
 export const initialState = {
     autocomplete: [],
@@ -26,7 +27,7 @@ const composedEnhancers = compose(
 );
 
 export const store = createStore(
-    combineReducers({ youtube, autocomplete }),
+    combineReducers({ youtube, autocomplete, player }),
     initialState,
     composedEnhancers
 );

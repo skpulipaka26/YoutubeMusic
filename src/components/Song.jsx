@@ -7,7 +7,7 @@ const Song = (props) => ({
         const thumbnail = snippet.thumbnails.default;
         return (
             <div
-                onClick={() => props.onSelect(song.id.videoId)}
+                onClick={() => props.onSelect(song)}
                 className="card my-2" style={{ cursor: 'pointer' }}>
                 <div className="d-flex align-items-center">
                     <img
