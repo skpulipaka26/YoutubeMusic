@@ -1,4 +1,4 @@
-import { FETCH_VIDEOS } from '../actions/videos';
+import { FETCH_VIDEOS } from '../actions/youtube';
 import { initialState } from '../store';
 
 export default (state = initialState, action) => {

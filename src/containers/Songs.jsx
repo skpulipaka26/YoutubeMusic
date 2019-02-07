@@ -3,19 +3,39 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
+import { Howl, Howler } from 'howler';
+
 import Song from '../components/Song';
+
+import { extractYoutubeVideo } from '../actions/youtube-extractor';
 
 class Songs extends Component {
 
-    componentDidMount() {
-        console.log(this.props);
+    componentDidMount() { }
+
+    onSelectYoutubeVideo(videoId) {
+        Howler.unload();
+        this.props.extractYoutubeVideo(videoId).then(res => {
+            const howl = new Howl({
+                src: [res.info.formats[0].url],
+                volume: 0.5,
+                html5: true
+            });
+            howl.play();
+        });
     }
 
     render() {
-        const songs = this.props.songs;
+        const songs = this.props.relatedYoutubeSearches;
         return (
-            <div>
-                {songs.map(song => <Song {...song} />)}
+            <div className="row">
+                {songs.map((song) => {
+                    return (
+                        <div key={song.etag} className="col-12">
+                            <Song {...song} onSelect={(id) => this.onSelectYoutubeVideo(id)} />
+                        </div>
+                    );
+                })}
             </div>
         );
     }
@@ -27,7 +47,9 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = dispatch => {
-    return bindActionCreators({}, dispatch);
+    return bindActionCreators({
+        extractYoutubeVideo
+    }, dispatch);
 }
 
 export default connect(

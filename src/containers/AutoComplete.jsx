@@ -7,6 +7,7 @@ import { BehaviorSubject } from 'rxjs';
 import { distinctUntilChanged, debounceTime, map, tap } from 'rxjs/operators';
 
 import { autoComplete } from '../actions/autocomplete';
+import { fetchYoutubeMetadata } from '../actions/youtube';
 
 class AutoComplele extends Component {
 
@@ -15,8 +16,7 @@ class AutoComplele extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            filteredList: [],
-            selectedResultIndex: 0,
+            selectedSearch: null,
             searchValue: ''
         };
     }
@@ -28,6 +28,10 @@ class AutoComplele extends Component {
             distinctUntilChanged(),
             debounceTime(100)
         ).subscribe(this.props.autoComplete);
+    }
+
+    async asyncSetState(value) {
+        return new Promise(resolve => this.setState(value, resolve));
     }
 
     onChange = e => {
@@ -50,6 +54,12 @@ class AutoComplele extends Component {
             default:
                 break;
         }
+    }
+
+    onSelectSearch() {
+        const queryString = this.state.selectedSearch;
+        this.props.fetchYoutubeMetadata(queryString);
+        this.searchEvent$.next('');
     }
 
     render() {
@@ -75,18 +85,16 @@ class AutoComplele extends Component {
                             }}>
                                 {this.props.autocomplete.map((listItem, index) => (
                                     <li key={index} className="list-group-item m-0"
-                                        onClick={() => {
-                                            this.setState({
-                                                ...this.state,
-                                                selectedResultIndex: index
-                                            });
+                                        onClick={async () => {
+                                            await this.asyncSetState({ selectedSearch: listItem });
+                                            this.onSelectSearch();
                                         }}
                                         style={{
                                             cursor: 'pointer',
-                                            border: this.state.selectedResultIndex === index ? '1px solid rgba(0,0,0,.125)' : 'none'
+                                            border: this.state.selectedSearch === listItem ? '1px solid rgba(0,0,0,.125)' : 'none'
                                         }}>
-                                        {listItem}</li>
-
+                                        {listItem}
+                                    </li>
                                 ))}
                             </ul>
                         )}
@@ -104,7 +112,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = dispatch => {
     return bindActionCreators({
-        autoComplete
+        autoComplete,
+        fetchYoutubeMetadata
     }, dispatch);
 }
 
