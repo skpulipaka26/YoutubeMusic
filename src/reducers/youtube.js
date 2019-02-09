@@ -1,4 +1,4 @@
-import { FETCH_VIDEOS, FETCH_REALTED_VIDES } from '../actions/youtube';
+import { SET_VIDEOS, SET_REALTED_VIDES } from '../actions/youtube';
 
 const initialState = {
     relatedSearches: [],
@@ -8,12 +8,12 @@ const initialState = {
 export default (state = initialState, action) => {
 
     switch (action.type) {
-        case FETCH_VIDEOS:
+        case SET_VIDEOS:
             return {
                 ...state,
                 searches: action.payload
             };
-        case FETCH_REALTED_VIDES:
+        case SET_REALTED_VIDES:
             return {
                 ...state,
                 relatedSearches: action.payload

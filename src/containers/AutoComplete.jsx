@@ -6,7 +6,7 @@ import { bindActionCreators } from 'redux';
 import { BehaviorSubject } from 'rxjs';
 import { distinctUntilChanged, debounceTime, map, tap } from 'rxjs/operators';
 
-import { autoComplete } from '../actions/autocomplete';
+import { autoComplete, SET_AUTOCOMPLETE } from '../actions/autocomplete';
 import { fetchYoutubeMetadata } from '../actions/youtube';
 
 class AutoComplele extends Component {
@@ -59,7 +59,7 @@ class AutoComplele extends Component {
     onSelectSearch() {
         const queryString = this.state.selectedSearch;
         this.props.fetchYoutubeMetadata(queryString);
-        this.searchEvent$.next('');
+        this.props.setAutocompleteList([]);
     }
 
     render() {
@@ -81,13 +81,14 @@ class AutoComplele extends Component {
                                 width: '100%',
                                 border: '3px solid rgba(0,0,0,.125)',
                                 borderTop: 'none',
+                                marginLeft: '-15px',
                                 backgroundColor: '#fff',
                                 zIndex: 1
                             }}>
                                 {this.props.autocomplete.map((listItem, index) => (
                                     <li key={index} className="list-group-item m-0"
                                         onClick={async () => {
-                                            await this.asyncSetState({ selectedSearch: listItem });
+                                            await this.asyncSetState({ selectedSearch: listItem, searchValue: listItem });
                                             this.onSelectSearch();
                                         }}
                                         style={{
@@ -101,20 +102,31 @@ class AutoComplele extends Component {
                         )}
                     </div>
                 </div>
-            </div >
+            </div>
         );
     }
 }
 
-const mapStateToProps = (state) => {
-    return state;
+const mapStateToProps = ({ autocomplete }) => {
+    return {
+        autocomplete: autocomplete
+    };
 }
 
 const mapDispatchToProps = dispatch => {
-    return bindActionCreators({
-        autoComplete,
-        fetchYoutubeMetadata
-    }, dispatch);
+    return bindActionCreators(
+        {
+            autoComplete,
+            fetchYoutubeMetadata,
+            setAutocompleteList: list => {
+                return dispatch({
+                    type: SET_AUTOCOMPLETE,
+                    payload: list
+                });
+            }
+        },
+        dispatch
+    );
 }
 
 export default connect(

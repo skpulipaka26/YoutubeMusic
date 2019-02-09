@@ -3,8 +3,7 @@ import React from 'react';
 const Song = (props) => ({
     render() {
         const song = props;
-        const snippet = song.snippet;
-        const thumbnail = snippet.thumbnails.default;
+        const thumbnail = song.thumbnail;
         return (
             <div
                 onClick={() => props.onSelect(song)}
@@ -14,8 +13,8 @@ const Song = (props) => ({
                         className="img-fluid mr-3"
                         style={{ width: '5rem' }}
                         src={thumbnail.url}
-                        alt={snippet.title} />
-                    <p className="m-0 p-0">{snippet.title}</p>
+                        alt={song.title} />
+                    <p className="m-0 p-0">{song.title}</p>
                 </div>
             </div>
         );

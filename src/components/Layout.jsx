@@ -22,9 +22,9 @@ const Layout = (props) => ({
                         {props.children}
                     </Container>
                 </main>
-                <footer style={{ position: 'fixed', bottom: 0, width: '100vw', backgroundColor: '#343a40', padding: '0.5rem 0', color: 'white' }}>
+                <div style={{ position: 'fixed', bottom: 0, width: '100vw', backgroundColor: '#343a40', color: 'white' }}>
                     <Player />
-                </footer>
+                </div>
             </div >
         );
     }

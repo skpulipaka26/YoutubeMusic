@@ -1,4 +1,4 @@
-export const FETCH_AUTOCOMPLETE = 'FETCH_AUTOCOMPLETE';
+export const SET_AUTOCOMPLETE = 'SET_AUTOCOMPLETE';
 
 const formatAutoCompleteResponse = (autoCompleteResponse) => {
     const results = autoCompleteResponse[1];
@@ -11,7 +11,7 @@ export const autoComplete = (searchString) => {
             document.head.removeChild(script);
             const autoCompleteList = formatAutoCompleteResponse(response);
             dispatch({
-                type: FETCH_AUTOCOMPLETE,
+                type: SET_AUTOCOMPLETE,
                 payload: autoCompleteList
             });
         };
