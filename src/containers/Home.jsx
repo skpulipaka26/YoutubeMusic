@@ -6,10 +6,12 @@ import { connect } from 'react-redux';
 import Song from '../components/Song';
 
 import { extractYoutubeVideo } from '../actions/youtube-extractor';
+import { setSelectedSong } from '../actions/youtube';
 
 class Home extends Component {
 
     onSelectYoutubeVideo(song) {
+        this.props.setSelectedSong(song);
         this.props.extractYoutubeVideo(song.videoId);
     }
 
@@ -32,7 +34,7 @@ class Home extends Component {
 
 }
 
-const mapStateToProps = ({youtube}) => {
+const mapStateToProps = ({ youtube }) => {
     return {
         youtube: youtube
     }
@@ -41,6 +43,7 @@ const mapStateToProps = ({youtube}) => {
 const mapDispatchToProps = dispatch => {
     return bindActionCreators({
         extractYoutubeVideo,
+        setSelectedSong
     }, dispatch);
 }
 

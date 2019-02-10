@@ -1,4 +1,4 @@
-import { SET_SELECTED_SONG } from '../actions/youtube-extractor';
+import { SET_EXTRACTOR_METADATA } from '../actions/youtube-extractor';
 
 const initialState = {
     metadata: null,
@@ -7,7 +7,7 @@ const initialState = {
 
 export default (state = initialState, action) => {
     switch (action.type) {
-        case SET_SELECTED_SONG:
+        case SET_EXTRACTOR_METADATA:
             return {
                 ...state,
                 ...action.payload

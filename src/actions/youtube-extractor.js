@@ -1,15 +1,15 @@
-import { push } from 'connected-react-router'
-
 import axios from 'axios';
+import { push } from 'connected-react-router'
 
 import { SET_RELATED_VIDEOS } from './youtube';
 
-export const SET_SELECTED_SONG = 'SET_SELECTED_SONG';
+export const SET_EXTRACTOR_METADATA = 'SET_EXTRACTOR_METADATA';
 const YT_SCRAPER_BASE_URL = 'http://localhost:3300/api';
 
 export const extractYoutubeVideo = (videoId) => {
     return async dispatch => {
         try {
+            dispatch(push(`/songs/${videoId}`));
             const res = await axios.get(`${YT_SCRAPER_BASE_URL}/info/${videoId}`, {
                 params: {
                     relatedList: true
@@ -18,20 +18,21 @@ export const extractYoutubeVideo = (videoId) => {
             const relatedVideos = res.data.relatedVideos;
             const selctedSongInfo = res.data.info;
             const { formats, ...metadata } = selctedSongInfo;
+            const reqObj = {
+                metadata: metadata,
+                formats: formats
+            };
             dispatch({
-                type: SET_SELECTED_SONG,
-                payload: {
-                    metadata: metadata,
-                    formats: formats
-                }
+                type: SET_EXTRACTOR_METADATA,
+                payload: reqObj
             });
             dispatch({
                 type: SET_RELATED_VIDEOS,
                 payload: relatedVideos
             });
-            dispatch(push(`/songs/${metadata.videoId}`));
+            return reqObj;
         } catch (error) {
-            return error;
+            dispatch(push(`/`));
         }
     }
 }

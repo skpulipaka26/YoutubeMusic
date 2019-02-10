@@ -1,6 +1,7 @@
-import { SET_SEARCH_VIDEOS, SET_RELATED_VIDEOS } from '../actions/youtube';
+import { SET_SEARCH_VIDEOS, SET_RELATED_VIDEOS, SET_SELECTED_SONG } from '../actions/youtube';
 
-const initialState = {
+
+let initialState = {
     relatedSearches: [
         {
             "videoId": "LjxulQ1bEWg",
@@ -165,8 +166,244 @@ const initialState = {
             }
         }
     ],
-    searches: []
+    searches: [
+        {
+            "url": "https://www.youtube.com/watch?v=6ONRf7h3Mdk",
+            "type": "video",
+            "title": "Travis Scott - SICKO MODE ft. Drake",
+            "duration": 323,
+            "thumbnail": {
+                "url": "https://i.ytimg.com/vi/6ONRf7h3Mdk/hqdefault.jpg?sqp=-oaymwEjCPYBEIoBSFryq4qpAxUIARUAAAAAGAElAADIQj0AgKJDeAE=&rs=AOn4CLBgJ5jicA86a4k0-bFTJhnig7oa1w",
+                "width": "246",
+                "height": "138"
+            },
+            "videoId": "6ONRf7h3Mdk"
+        },
+        {
+            "url": "https://www.youtube.com/watch?v=d-JBBNg8YKs",
+            "type": "video",
+            "title": "Travis Scott - SICKO MODE (Official Audio)",
+            "duration": 315,
+            "thumbnail": {
+                "url": "https://i.ytimg.com/vi/d-JBBNg8YKs/hqdefault.jpg?sqp=-oaymwEjCPYBEIoBSFryq4qpAxUIARUAAAAAGAElAADIQj0AgKJDeAE=&rs=AOn4CLCacKzNiXa9nLJD4HBzeH33H5_-3g",
+                "width": "246",
+                "height": "138"
+            },
+            "videoId": "d-JBBNg8YKs"
+        },
+        {
+            "url": "https://www.youtube.com/watch?v=ZwyiZLgiP6w",
+            "type": "video",
+            "title": "Travis Scott - SICKO MODE (Lyrics) ft. Drake",
+            "duration": 314,
+            "thumbnail": {
+                "url": "https://i.ytimg.com/vi/ZwyiZLgiP6w/hqdefault.jpg?sqp=-oaymwEjCPYBEIoBSFryq4qpAxUIARUAAAAAGAElAADIQj0AgKJDeAE=&rs=AOn4CLBw_VVXxgse7GMpVdEo_35BB6uliA",
+                "width": "246",
+                "height": "138"
+            },
+            "videoId": "ZwyiZLgiP6w"
+        },
+        {
+            "url": "https://www.youtube.com/watch?v=BHy2XymUkvs",
+            "type": "video",
+            "title": "Travis Scott - SICKO MODE | 8D AUDIO",
+            "duration": 315,
+            "thumbnail": {
+                "url": "https://i.ytimg.com/vi/BHy2XymUkvs/hqdefault.jpg?sqp=-oaymwEjCPYBEIoBSFryq4qpAxUIARUAAAAAGAElAADIQj0AgKJDeAE=&rs=AOn4CLDOO32sTelQ4GmVlIu4-pEdvsMTKg",
+                "width": "246",
+                "height": "138"
+            },
+            "videoId": "BHy2XymUkvs"
+        },
+        {
+            "url": "https://www.youtube.com/watch?v=NQbkGDoD7B0",
+            "type": "video",
+            "title": "SICKO MODE",
+            "duration": 313,
+            "thumbnail": {
+                "url": "https://i.ytimg.com/vi/NQbkGDoD7B0/hqdefault.jpg?sqp=-oaymwEjCPYBEIoBSFryq4qpAxUIARUAAAAAGAElAADIQj0AgKJDeAE=&rs=AOn4CLDqsfp9hUa5qSeAd5TUk9HCe5pqYw",
+                "width": "246",
+                "height": "138"
+            },
+            "videoId": "NQbkGDoD7B0"
+        },
+        {
+            "url": "https://www.youtube.com/watch?v=S_tBc20Ivuo",
+            "type": "video",
+            "title": "Travis Scott - SICKO MODE [LYRICS]",
+            "duration": 315,
+            "thumbnail": {
+                "url": "https://i.ytimg.com/vi/S_tBc20Ivuo/hqdefault.jpg?sqp=-oaymwEjCPYBEIoBSFryq4qpAxUIARUAAAAAGAElAADIQj0AgKJDeAE=&rs=AOn4CLDtRpmWwjyPH-0YyL1FkQNYpyVXpA",
+                "width": "246",
+                "height": "138"
+            },
+            "videoId": "S_tBc20Ivuo"
+        },
+        {
+            "url": "https://www.youtube.com/watch?v=Nhsb4MXunMo",
+            "type": "video",
+            "title": "Travis Scott - SICKO MODE (Clean) Ft. Drake (ASTROWORLD)",
+            "duration": 314,
+            "thumbnail": {
+                "url": "https://i.ytimg.com/vi/Nhsb4MXunMo/hqdefault.jpg?sqp=-oaymwEjCPYBEIoBSFryq4qpAxUIARUAAAAAGAElAADIQj0AgKJDeAE=&rs=AOn4CLBJqyA3mHq4XIlN1hqUWdHdmWEt_A",
+                "width": "246",
+                "height": "138"
+            },
+            "videoId": "Nhsb4MXunMo"
+        },
+        {
+            "url": "https://www.youtube.com/watch?v=Zj2cK8wymIA",
+            "type": "video",
+            "title": "Cardi B - Money (Official Audio)",
+            "duration": 184,
+            "thumbnail": {
+                "url": "https://i.ytimg.com/vi/Zj2cK8wymIA/hqdefault.jpg?sqp=-oaymwEjCPYBEIoBSFryq4qpAxUIARUAAAAAGAElAADIQj0AgKJDeAE=&rs=AOn4CLA_L52GMbkRoX4wHz2XnHIcNvyPjQ",
+                "width": "246",
+                "height": "138"
+            },
+            "videoId": "Zj2cK8wymIA"
+        },
+        {
+            "url": "https://www.youtube.com/watch?v=XNpGNykVZ6U",
+            "type": "video",
+            "title": "Nonstop",
+            "duration": 239,
+            "thumbnail": {
+                "url": "https://i.ytimg.com/vi/XNpGNykVZ6U/hqdefault.jpg?sqp=-oaymwEjCPYBEIoBSFryq4qpAxUIARUAAAAAGAElAADIQj0AgKJDeAE=&rs=AOn4CLCpkNpf7tOEkj3O87bCi3nLaGLy9g",
+                "width": "246",
+                "height": "138"
+            },
+            "videoId": "XNpGNykVZ6U"
+        },
+        {
+            "url": "https://www.youtube.com/watch?v=lJTRVX9R5EA",
+            "type": "video",
+            "title": "Drake - Nonstop",
+            "duration": 316,
+            "thumbnail": {
+                "url": "https://i.ytimg.com/vi/lJTRVX9R5EA/hqdefault.jpg?sqp=-oaymwEjCPYBEIoBSFryq4qpAxUIARUAAAAAGAElAADIQj0AgKJDeAE=&rs=AOn4CLCnJy5KwgwFFfrVyCxi9-P1-3SLWg",
+                "width": "246",
+                "height": "138"
+            },
+            "videoId": "lJTRVX9R5EA"
+        },
+        {
+            "url": "https://www.youtube.com/watch?v=lHPDP-q3EIY",
+            "type": "video",
+            "title": "SICKO MODE but I don't think I got the right version",
+            "duration": 332,
+            "thumbnail": {
+                "url": "https://i.ytimg.com/vi/lHPDP-q3EIY/hqdefault.jpg?sqp=-oaymwEjCPYBEIoBSFryq4qpAxUIARUAAAAAGAElAADIQj0AgKJDeAE=&rs=AOn4CLBTq39wn4ot8JUT2BCfYZdAQ6hnSQ",
+                "width": "246",
+                "height": "138"
+            },
+            "videoId": "lHPDP-q3EIY"
+        },
+        {
+            "url": "https://www.youtube.com/watch?v=nL3F_LJ5Eh0",
+            "type": "video",
+            "title": "James Harden ‘SICKO MODE’ Mix ᴴᴰ",
+            "duration": 361,
+            "thumbnail": {
+                "url": "https://i.ytimg.com/vi/nL3F_LJ5Eh0/hqdefault.jpg?sqp=-oaymwEjCPYBEIoBSFryq4qpAxUIARUAAAAAGAElAADIQj0AgKJDeAE=&rs=AOn4CLCkaiJYhyX9394VXZstDEsVBHe9GQ",
+                "width": "246",
+                "height": "138"
+            },
+            "videoId": "nL3F_LJ5Eh0"
+        },
+        {
+            "url": "https://www.youtube.com/watch?v=m3mZfCywxO8",
+            "type": "video",
+            "title": "Travis Scott, Drake - Sicko Mode (8D AUDIO) 🎧",
+            "duration": 316,
+            "thumbnail": {
+                "url": "https://i.ytimg.com/vi/m3mZfCywxO8/hqdefault.jpg?sqp=-oaymwEjCPYBEIoBSFryq4qpAxUIARUAAAAAGAElAADIQj0AgKJDeAE=&rs=AOn4CLAzYqYLYh5JFWtJjRMJN6_98hNEDQ",
+                "width": "246",
+                "height": "138"
+            },
+            "videoId": "m3mZfCywxO8"
+        },
+        {
+            "url": "https://www.youtube.com/watch?v=doLVt9Y7_84",
+            "type": "video",
+            "title": "TRAVIS SCOTT GOES SICKO MODE AT SUPER BOWL 53 HALFTIME SHOW!!",
+            "duration": 128,
+            "thumbnail": {
+                "url": "https://i.ytimg.com/vi/doLVt9Y7_84/hqdefault.jpg?sqp=-oaymwEjCPYBEIoBSFryq4qpAxUIARUAAAAAGAElAADIQj0AgKJDeAE=&rs=AOn4CLDLcZF6iRVbutsh3x3WrJJwumQSTA",
+                "width": "246",
+                "height": "138"
+            },
+            "videoId": "doLVt9Y7_84"
+        },
+        {
+            "url": "https://www.youtube.com/watch?v=9oRAbFwxLsA",
+            "type": "video",
+            "title": "Sucko Mode 2 (Official Video)",
+            "duration": 132,
+            "thumbnail": {
+                "url": "https://i.ytimg.com/vi/9oRAbFwxLsA/hqdefault.jpg?sqp=-oaymwEjCPYBEIoBSFryq4qpAxUIARUAAAAAGAElAADIQj0AgKJDeAE=&rs=AOn4CLAY5z2yIVp9a-jBINbJ7dp90cWJ2w",
+                "width": "246",
+                "height": "138"
+            },
+            "videoId": "9oRAbFwxLsA"
+        },
+        {
+            "url": "https://www.youtube.com/watch?v=RFyC6nZF5DI",
+            "type": "video",
+            "title": "Travis Scott, Skrillex - SICKO MODE (Skrillex Remix) (Audio)",
+            "duration": 307,
+            "thumbnail": {
+                "url": "https://i.ytimg.com/vi/RFyC6nZF5DI/hqdefault.jpg?sqp=-oaymwEjCPYBEIoBSFryq4qpAxUIARUAAAAAGAElAADIQj0AgKJDeAE=&rs=AOn4CLCUA7mM_55KBSMrBpy-6laQqprypg",
+                "width": "246",
+                "height": "138"
+            },
+            "videoId": "RFyC6nZF5DI"
+        },
+        {
+            "url": "https://www.youtube.com/watch?v=oRa_c9zfZh0",
+            "type": "video",
+            "title": "SICKO BAMBA",
+            "duration": 320,
+            "thumbnail": {
+                "url": "https://i.ytimg.com/vi/oRa_c9zfZh0/hqdefault.jpg?sqp=-oaymwEjCPYBEIoBSFryq4qpAxUIARUAAAAAGAElAADIQj0AgKJDeAE=&rs=AOn4CLAQarK2HOm8kQmO4SNG9mHsKvemXA",
+                "width": "246",
+                "height": "138"
+            },
+            "videoId": "oRa_c9zfZh0"
+        },
+        {
+            "url": "https://www.youtube.com/watch?v=FzjBKzfbhjU",
+            "type": "video",
+            "title": "Travis Scott - SICKO MODE (MINECRAFT PARODY) ft. Lil Cheek & Slim Natey",
+            "duration": 276,
+            "thumbnail": {
+                "url": "https://i.ytimg.com/vi/FzjBKzfbhjU/hqdefault.jpg?sqp=-oaymwEjCPYBEIoBSFryq4qpAxUIARUAAAAAGAElAADIQj0AgKJDeAE=&rs=AOn4CLCz-5zNSWtovB_nZpC-EkO2ftPRsg",
+                "width": "246",
+                "height": "138"
+            },
+            "videoId": "FzjBKzfbhjU"
+        },
+        {
+            "url": "https://www.youtube.com/watch?v=Vw52nhF5J1c",
+            "type": "video",
+            "title": "Mama Mode (Sicko Mode Parody)",
+            "duration": 261,
+            "thumbnail": {
+                "url": "https://i.ytimg.com/vi/Vw52nhF5J1c/hqdefault.jpg?sqp=-oaymwEjCPYBEIoBSFryq4qpAxUIARUAAAAAGAElAADIQj0AgKJDeAE=&rs=AOn4CLAS0PrpmdgByDYF3h_STl6NdYkY3g",
+                "width": "246",
+                "height": "138"
+            },
+            "videoId": "Vw52nhF5J1c"
+        }
+    ],
+    selectedSong: null
 }
+
+initialState = {
+    relatedSearches: [],
+    searches: [],
+    selectedSong: null
+};
 
 export default (state = initialState, action) => {
     switch (action.type) {
@@ -179,6 +416,11 @@ export default (state = initialState, action) => {
             return {
                 ...state,
                 relatedSearches: action.payload
+            };
+        case SET_SELECTED_SONG:
+            return {
+                ...state,
+                selectedSong: action.payload
             }
         default:
             return state;

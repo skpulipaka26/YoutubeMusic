@@ -1,7 +1,9 @@
 import axios from 'axios';
+import { push } from 'connected-react-router'
 
 export const SET_SEARCH_VIDEOS = 'SET_SEARCH_VIDEOS';
 export const SET_RELATED_VIDEOS = 'FETCH_REALTED_VIDEOS';
+export const SET_SELECTED_SONG = 'SET_SELECTED_SONG';
 
 const YT_SCRAPER_BASE_URL = 'http://localhost:3300/api'
 
@@ -18,8 +20,16 @@ export const fetchYoutubeMetadata = (searchString) => {
                 type: SET_SEARCH_VIDEOS,
                 payload: searchItems
             });
+            dispatch(push(`/`));
         } catch (error) {
             console.log(error);
         }
     }
+}
+
+export const setSelectedSong = song => {
+    return dispatch => dispatch({
+        type: SET_SELECTED_SONG,
+        payload: song
+    });
 }
