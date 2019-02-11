@@ -26,9 +26,10 @@ class Songs extends Component {
         if (!videoId || !selectedSong) {
             return <Redirect to="/" />
         }
-        const currPlayingPlayer = this.props.playlist
-            .filter(song => song.videoId === selectedSong.videoId)[0];
-        const currPlayingSongStatus = currPlayingPlayer ? currPlayingPlayer.howl.playing() : false;
+        const currentPlaying = this.props.currentPlaying;
+        const seek = currentPlaying.seek;
+        // const currPlayingSongStatus = currPlayingPlayer ? currPlayingPlayer.playing() : false;
+        const currPlayingSongStatus = currentPlaying.playing;
         return (
             <div>
                 <div className="row mt-3"
@@ -57,7 +58,7 @@ class Songs extends Component {
                                     </p>
                                     <div className="d-flex align-items-baseline">
                                         <p className="p-0 m-0 mr-2">
-                                            {Math.floor(selectedSong.metadata.lengthSeconds / 60)}:{selectedSong.metadata.lengthSeconds % 60}
+                                            {Math.floor(seek / 60)}:{Math.floor(seek % 60)} / {Math.floor(selectedSong.metadata.lengthSeconds / 60)}:{selectedSong.metadata.lengthSeconds % 60}
                                         </p>
                                         <Bars status={currPlayingSongStatus} />
                                     </div>
@@ -95,7 +96,8 @@ class Songs extends Component {
 const mapStateToProps = ({ youtube, player }) => {
     return {
         searchData: youtube,
-        playlist: player.playlist
+        playlist: player.playlist,
+        currentPlaying: player.currentPlaying
     };
 }
 

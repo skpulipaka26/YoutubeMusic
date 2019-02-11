@@ -20,7 +20,7 @@ export const extractYoutubeVideo = (videoId) => {
             const { formats, ...metadata } = selctedSongInfo;
             const reqObj = {
                 metadata: metadata,
-                formats: formats
+                formats: formats.filter(format => format.audioQuality && !format.mimeType.includes('video'))
             };
             dispatch({
                 type: SET_EXTRACTOR_METADATA,
