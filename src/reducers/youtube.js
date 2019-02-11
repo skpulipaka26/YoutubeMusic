@@ -1,4 +1,4 @@
-import { SET_SEARCH_VIDEOS, SET_RELATED_VIDEOS, SET_SELECTED_SONG } from '../actions/youtube';
+import { SET_SEARCH_VIDEOS, SET_RELATED_VIDEOS, SET_SELECTED_SONG, UPDATE_SELECTED_SONG } from '../actions/youtube';
 
 
 let initialState = {
@@ -422,6 +422,14 @@ export default (state = initialState, action) => {
                 ...state,
                 selectedSong: action.payload
             }
+        case UPDATE_SELECTED_SONG:
+            return {
+                ...state,
+                selectedSong: {
+                    ...state.selectedSong,
+                    ...action.payload
+                }
+            };
         default:
             return state;
     }

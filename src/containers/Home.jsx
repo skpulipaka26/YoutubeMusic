@@ -7,11 +7,13 @@ import Song from '../components/Song';
 
 import { extractYoutubeVideo } from '../actions/youtube-extractor';
 import { setSelectedSong } from '../actions/youtube';
+import { handleSongPlay } from '../actions/player';
 
 class Home extends Component {
 
     onSelectYoutubeVideo(song) {
         this.props.setSelectedSong(song);
+        this.props.handleSongPlay(song);
         this.props.extractYoutubeVideo(song.videoId);
     }
 
@@ -43,7 +45,8 @@ const mapStateToProps = ({ youtube }) => {
 const mapDispatchToProps = dispatch => {
     return bindActionCreators({
         extractYoutubeVideo,
-        setSelectedSong
+        setSelectedSong,
+        handleSongPlay
     }, dispatch);
 }
 

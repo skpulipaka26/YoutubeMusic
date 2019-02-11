@@ -2,6 +2,7 @@ import { Howl } from 'howler';
 import { extractYoutubeVideo } from '../actions/youtube-extractor';
 
 export const ADD_SONG_TO_PLAYLIST = 'ADD_SONG_TO_PLAYLIST';
+export const SET_PLAYLIST = 'SET_PLAYLIST';
 
 export const handleSongPlay = (song) => {
     return async (dispatch, getState) => {
@@ -31,12 +32,27 @@ export const handleSongPlay = (song) => {
             });
         };
         const playlist = getState().player.playlist;
-        playlist.forEach(player => {
-            if (player.videoId !== song.videoId) {
-                player.howl.pause();
-                return;
+        const updatedPlaylist = playlist.map(player => {
+            const updatedPlayer = player;
+            // updatedPlayer.howl.pause();
+            if (updatedPlayer.videoId !== song.videoId) {
+                updatedPlayer.howl.pause();
+                return updatedPlayer;
             }
-            player.howl.play();
+            updatedPlayer.howl.playing() ? updatedPlayer.howl.pause() : updatedPlayer.howl.play();
+            return updatedPlayer;
         });
+        updatedPlaylist.forEach(player => {
+            updatePlaylistOnEvent('play', player.howl, updatedPlaylist, dispatch);
+            updatePlaylistOnEvent('pause', player.howl, playlist, dispatch);
+        });
+
     }
+}
+
+function updatePlaylistOnEvent(event, player, playlist, dispatch) {
+    player.on(event, () => dispatch({
+        type: SET_PLAYLIST,
+        payload: playlist
+    }));
 }
