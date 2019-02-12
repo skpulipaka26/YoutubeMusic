@@ -12,6 +12,10 @@ import { handleSongPlay } from '../actions/player';
 class Home extends Component {
 
     onSelectYoutubeVideo(song) {
+        const currentPlayingPlayer = this.props.currentPlayingPlayer;
+        if (currentPlayingPlayer && currentPlayingPlayer.playing()) {
+            currentPlayingPlayer.stop()
+        }
         this.props.setSelectedSong(song);
         this.props.handleSongPlay(song);
         this.props.extractYoutubeVideo(song.videoId);
@@ -33,12 +37,12 @@ class Home extends Component {
             </div>
         );
     }
-
 }
 
-const mapStateToProps = ({ youtube }) => {
+const mapStateToProps = ({ youtube, player: { currentPlaying: { player } } }) => {
     return {
-        youtube: youtube
+        youtube: youtube,
+        currentPlayingPlayer: player
     }
 };
 

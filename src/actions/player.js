@@ -36,11 +36,13 @@ export const handleSongPlay = (song) => {
         };
         const playlist = getState().player.playlist;
         playlist.forEach(player => {
-            if (player.howl.state() !== 'loaded') {
-                const events = ['play', 'pause', 'stop'];
+            if (player.howl.state() === 'loading') {
+                const events = ['play', 'pause', 'stop', 'end', 'loaderror', 'playerror'];
                 events.forEach(event => dispatch(setupPlayerEvents(event, player.howl)));
             }
         });
+        const reqSongFromPlaylist = playlist.find(player => player.videoId === song.videoId);
+        return reqSongFromPlaylist;
     }
 }
 
@@ -78,16 +80,11 @@ function setupPlayerEvents(event, player) {
                     });
                     break;
                 }
-                case 'stop': {
-                    dispatch({
-                        type: UPDATE_CURRENT_PLAYING,
-                        payload: {
-                            playing: false,
-                            timer: null,
-                            player: null,
-                            seek: 0
-                        }
-                    });
+                case 'stop':
+                case 'end':
+                case 'loaderror':
+                case 'playerror': {
+                    resetPlayer(dispatch, getState);
                     break;
                 }
                 default:
@@ -96,6 +93,23 @@ function setupPlayerEvents(event, player) {
 
         });
     }
+}
+
+function resetPlayer(dispatch, getState) {
+    const currPlaying = getState().player.currentPlaying;
+    const timer = currPlaying.timer;
+    if (timer) {
+        clearTimeout(timer);
+    }
+    dispatch({
+        type: UPDATE_CURRENT_PLAYING,
+        payload: {
+            playing: false,
+            timer: null,
+            player: null,
+            seek: 0
+        }
+    });
 }
 
 function setIntervalAndExecute(callback, t) {

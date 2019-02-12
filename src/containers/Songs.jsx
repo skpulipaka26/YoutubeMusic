@@ -13,10 +13,18 @@ import Player from './Player';
 
 class Songs extends Component {
 
-    onSelectSong(song) {
-        this.props.setSelectedSong(song);
-        this.props.handleSongPlay(song);
+    async onSelectSong(song) {
+        const currentPlayingPlayer = this.props.currentPlayingPlayer;
+        if (currentPlayingPlayer && currentPlayingPlayer.playing()) {
+            currentPlayingPlayer.stop();
+        }
         window.scrollTo(0, 0);
+        const selectedSong = await this.props.setSelectedSong(song);
+        const player = await this.props.handleSongPlay(selectedSong);
+        if (!player) {
+            return;
+        }
+        player.howl.play();
     }
 
     render() {
@@ -26,7 +34,7 @@ class Songs extends Component {
         if (!videoId || !selectedSong) {
             return <Redirect to="/" />
         }
-       
+
         return (
             <div>
                 <Player videoId={videoId} />
@@ -55,11 +63,10 @@ class Songs extends Component {
 
 }
 
-const mapStateToProps = ({ youtube, player }) => {
+const mapStateToProps = ({ youtube, player: { currentPlaying: { player } } }) => {
     return {
         searchData: youtube,
-        playlist: player.playlist,
-        currentPlaying: player.currentPlaying
+        currentPlayingPlayer: player
     };
 }
 

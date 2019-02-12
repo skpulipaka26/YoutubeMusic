@@ -22,6 +22,7 @@ export const fetchYoutubeMetadata = (searchString) => {
                 payload: searchItems
             });
             dispatch(push(`/`));
+            window.scrollTo(0, 0);
         } catch (error) {
             console.log(error);
         }
@@ -29,10 +30,13 @@ export const fetchYoutubeMetadata = (searchString) => {
 }
 
 export const setSelectedSong = song => {
-    return dispatch => dispatch({
-        type: SET_SELECTED_SONG,
-        payload: song
-    });
+    return dispatch => {
+        dispatch({
+            type: SET_SELECTED_SONG,
+            payload: song
+        });
+        return song;
+    };
 }
 
 export const updateSelectedSong = song => {

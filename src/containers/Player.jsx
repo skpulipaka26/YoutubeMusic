@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import Bars from '../components/Bars';
+import Song from '../components/Song';
 
 class Player extends Component {
 
@@ -19,7 +20,16 @@ class Player extends Component {
         if (this.state.initialized || !videoId) {
             return;
         }
-        const currentPlayerList = this.props.playlist.filter(player => player.videoId === videoId);
+        this.startPlaying(videoId);
+    }
+
+    startPlaying(videoId) {
+        const currentPlayerList = this.props.playlist.filter(player => {
+            if (player.howl.playing()) {
+                player.howl.stop();
+            }
+            return player.videoId === videoId;
+        });
         if (!currentPlayerList.length) {
             return;
         }
@@ -28,7 +38,16 @@ class Player extends Component {
             initialized: true
         });
         currPlayer.play();
-        setTimeout(() => currPlayer.pause(), 5000);
+    }
+
+    onPlayer(song) {
+        const videoId = song.videoId;
+        const currentPlayerList = this.props.playlist.filter(player => player.videoId === videoId);
+        if (!currentPlayerList.length) {
+            return;
+        }
+        const currPlayer = currentPlayerList[0].howl;
+        currPlayer.playing() ? currPlayer.pause() : currPlayer.play();
     }
 
     render() {
@@ -49,16 +68,7 @@ class Player extends Component {
                     backgroundColor: '#ffff'
                 }} >
                 <div className="col-12">
-                    <div className="card my-2" style={{ cursor: 'pointer' }}
-                        onClick={() => this.onSelectSong(selectedSong)}  >
-                        <div className="d-flex align-items-center">
-                            <img
-                                className="img-fluid mr-3"
-                                src={selectedSong.thumbnail.url}
-                                alt={selectedSong.title} />
-                            <p className="m-0 p-0 text-truncate">{selectedSong.title}</p>
-                        </div>
-                    </div>
+                    <Song {...selectedSong} onSelect={(song) => this.onPlayer(song)} />
                     {selectedSong.metadata && (
                         <div className="card-footer text-muted">
                             <div className="d-flex align-items-center justify-content-between">
@@ -76,6 +86,7 @@ class Player extends Component {
                     )}
                 </div>
             </div>
+
         );
     }
 }

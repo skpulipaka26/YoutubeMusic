@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import { BehaviorSubject } from 'rxjs';
-import { distinctUntilChanged, debounceTime, map, tap } from 'rxjs/operators';
+import { distinctUntilChanged, map, tap } from 'rxjs/operators';
 
 import { autoComplete, SET_AUTOCOMPLETE } from '../actions/autocomplete';
 import { fetchYoutubeMetadata } from '../actions/youtube';
@@ -30,7 +30,6 @@ class AutoComplele extends Component {
             })),
             map(e => e && e.target ? e.target.value.trim().toLowerCase() : ''),
             distinctUntilChanged(),
-            debounceTime(100)
         ).subscribe(this.props.autoComplete);
     }
 
