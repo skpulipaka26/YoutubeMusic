@@ -6,9 +6,8 @@ const Song = (props) => {
     const song = props;
     const thumbnail = song.thumbnail;
     return (
-        <div
-            onClick={() => props.onSelect(song)}
-            className="card my-2" style={{ cursor: 'pointer' }}>
+        <div className="card" style={{ cursor: 'pointer' }}
+            onClick={() => props.onSelect(song)} >
             <div className="d-flex align-items-center">
                 <img
                     className="img-fluid mr-3"

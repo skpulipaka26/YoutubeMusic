@@ -9,7 +9,6 @@ import { handleSongPlay } from '../actions/player';
 import { setSelectedSong } from '../actions/youtube';
 
 import Song from '../components/Song';
-import Player from './Player';
 
 class Songs extends Component {
 
@@ -37,21 +36,11 @@ class Songs extends Component {
 
         return (
             <div>
-                <Player videoId={videoId} />
-                <hr />
-                <div className="row">
-                    <div className="col-12 d-flex justify-content-between align-items-center">
-                        <h6 className="p-0 m-0 font-weight-bold"> RELATED</h6>
-                        <div>
-                            {/* TODO: Autoplay toggle button */}
-                        </div>
-                    </div>
-                </div>
                 <div className="row">
                     {searchData.relatedSearches
                         .map(video => {
                             return (
-                                <div className="col-12" key={video.videoId}>
+                                <div className="col-12 my-2" key={video.videoId}>
                                     <Song {...video} onSelect={(song) => this.onSelectSong(song)} />
                                 </div>
                             );

@@ -28,7 +28,7 @@ class Home extends Component {
                 <div className="row">
                     {searches.map((song) => {
                         return (
-                            <div key={song.videoId} className="col-12">
+                            <div key={song.videoId} className="col-12 my-2">
                                 <Song {...song} onSelect={(song) => this.onSelectYoutubeVideo(song)} />
                             </div>
                         );

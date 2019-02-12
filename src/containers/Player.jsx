@@ -16,7 +16,7 @@ class Player extends Component {
     }
 
     componentDidUpdate() {
-        const videoId = this.props.videoId;
+        const videoId = this.props.videoId || this.props.selectedSong ? this.props.selectedSong.videoId : null;
         if (this.state.initialized || !videoId) {
             return;
         }
@@ -40,6 +40,13 @@ class Player extends Component {
         currPlayer.play();
     }
 
+    getProgress(seek, duration) {
+        const progress = (seek * 100) / Number(duration);
+        return {
+            width: `${progress}%`
+        };
+    }
+
     onPlayer(song) {
         const videoId = song.videoId;
         const currentPlayerList = this.props.playlist.filter(player => player.videoId === videoId);
@@ -51,8 +58,7 @@ class Player extends Component {
     }
 
     render() {
-        const searchData = this.props.searchData;
-        const selectedSong = searchData.selectedSong;
+        const selectedSong = this.props.selectedSong;
         const currentPlaying = this.props.currentPlaying;
         const seek = currentPlaying.seek;
         const currPlayingSongStatus = currentPlaying.playing;
@@ -60,30 +66,32 @@ class Player extends Component {
             return <div></div>;
         }
         return (
-            <div className="row mt-3"
-                style={{
-                    position: 'sticky',
-                    top: '4rem',
-                    zIndex: 1,
-                    backgroundColor: '#ffff'
-                }} >
-                <div className="col-12">
-                    <Song {...selectedSong} onSelect={(song) => this.onPlayer(song)} />
-                    {selectedSong.metadata && (
-                        <div className="card-footer text-muted">
-                            <div className="d-flex align-items-center justify-content-between">
-                                <p className="p-0 m-0">
-                                    {selectedSong.metadata.author}
-                                </p>
-                                <div className="d-flex align-items-baseline">
-                                    <p className="p-0 m-0 mr-2">
-                                        {Math.floor(seek / 60)}:{Math.floor(seek % 60)} / {Math.floor(selectedSong.metadata.lengthSeconds / 60)}:{selectedSong.metadata.lengthSeconds % 60}
+            <div className="row mt-2">
+                <div className="col-12 p-0">
+                    <div style={{ backgroundColor: 'white' }}>
+                        <Song {...selectedSong} onSelect={(song) => this.onPlayer(song)} />
+                        {selectedSong.metadata && (
+                            <div className="card-footer text-muted p-0 py-4 px-2">
+                                <div className="d-flex align-items-center justify-content-between">
+                                    <p className="p-0 m-0">
+                                        {selectedSong.metadata.author}
                                     </p>
-                                    <Bars status={currPlayingSongStatus} />
+                                    <div className="d-flex align-items-baseline">
+                                        <p className="p-0 m-0 mr-2">
+                                            {Math.floor(seek / 60)}:{Math.floor(seek % 60)} / {Math.floor(selectedSong.metadata.lengthSeconds / 60)}:{selectedSong.metadata.lengthSeconds % 60}
+                                        </p>
+                                        <Bars status={currPlayingSongStatus} />
+                                    </div>
+                                </div>
+                                <div>
+                                    <div className="progress" style={{ height: '0.25rem' }}>
+                                        <div className="progress-bar bg-danger" role="progressbar" style={this.getProgress(seek, selectedSong.metadata.lengthSeconds)} aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    )}
+                        )}
+                    </div>
+                    <hr />
                 </div>
             </div>
 
@@ -91,9 +99,9 @@ class Player extends Component {
     }
 }
 
-const mapStateToProps = ({ youtube, player }) => {
+const mapStateToProps = ({ youtube: { selectedSong }, player }) => {
     return {
-        searchData: youtube,
+        selectedSong: selectedSong,
         playlist: player.playlist,
         currentPlaying: player.currentPlaying
     };
