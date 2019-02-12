@@ -29,7 +29,9 @@
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "electron": "electron .",
-    "dev": "nf start -p 3000"
+    "dev": "nf start -p 3000",
+    "heroku-postbuild": "echo Skip build on Heroku"
   },
-  "proxy": "http://localhost:3000"
+  "proxy": "http://localhost:3000",
+  "heroku-run-build-script": true
 }
