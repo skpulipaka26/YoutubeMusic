@@ -2,9 +2,10 @@ import axios from 'axios';
 import { push } from 'connected-react-router'
 
 import { SET_RELATED_VIDEOS, UPDATE_SELECTED_SONG } from './youtube';
+import { BACKEND_BASE_URL } from '../util/constants';
 
 export const SET_EXTRACTOR_METADATA = 'SET_EXTRACTOR_METADATA';
-const YT_SCRAPER_BASE_URL = 'http://localhost:3300/api';
+const YT_SCRAPER_BASE_URL = BACKEND_BASE_URL;
 
 export const extractYoutubeVideo = (videoId) => {
     return async dispatch => {

@@ -1,12 +1,13 @@
 import axios from 'axios';
 import { push } from 'connected-react-router'
+import { BACKEND_BASE_URL } from '../util/constants';
 
 export const SET_SEARCH_VIDEOS = 'SET_SEARCH_VIDEOS';
 export const SET_RELATED_VIDEOS = 'FETCH_REALTED_VIDEOS';
 export const SET_SELECTED_SONG = 'SET_SELECTED_SONG';
 export const UPDATE_SELECTED_SONG = 'UPDATE_SELECTED_SONG';
 
-const YT_SCRAPER_BASE_URL = 'http://localhost:3300/api'
+const YT_SCRAPER_BASE_URL = BACKEND_BASE_URL;
 
 export const fetchYoutubeMetadata = (searchString) => {
     return async dispatch => {
