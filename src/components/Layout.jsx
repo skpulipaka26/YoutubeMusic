@@ -5,7 +5,6 @@ import { Container, Navbar, Image } from 'react-bootstrap';
 import AutoComplete from '../containers/AutoComplete';
 
 import logo from '../assets/logo.png';
-import Player from '../containers/Player';
 
 const Layout = (props) => {
     return (
@@ -22,7 +21,6 @@ const Layout = (props) => {
                 </Container>
             </main>
             <div style={{ position: 'fixed', bottom: 0, width: '100vw', backgroundColor: '#343a40', color: 'white' }}>
-                <Player />
             </div>
         </div >
     );

@@ -3,50 +3,89 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
+import Bars from '../components/Bars';
+
 class Player extends Component {
 
-    togglePlayer() {
-        const player = this.props.player;
-        const currentPlayerObj = player.currentPlaying.howlPlayer;
-        currentPlayerObj.playing() ? currentPlayerObj.pause() : currentPlayerObj.play();
+    constructor(props) {
+        super(props);
+        this.state = {
+            initialized: false
+        };
+    }
+
+    componentDidUpdate() {
+        const videoId = this.props.videoId;
+        if (this.state.initialized || !videoId) {
+            return;
+        }
+        const currentPlayerList = this.props.playlist.filter(player => player.videoId === videoId);
+        if (!currentPlayerList.length) {
+            return;
+        }
+        const currPlayer = currentPlayerList[0].howl;
+        this.setState({
+            initialized: true
+        });
+        currPlayer.play();
+        setTimeout(() => currPlayer.pause(), 5000);
     }
 
     render() {
-        return <div></div>;
-        // const player = this.props.player;
-        // const currentPlayingMetadta = player.currentPlaying.metadata;
-        // const currentPlayerObj = player.currentPlaying.howlPlayer;
-        // return (
-        //     currentPlayingMetadta && (
-        //         <div className="container py-3">
-        //             <div className="d-flex row align-items-center justify-content-between">
-        //                 <div className="d-flex col-6 align-items-center">
-        //                     <img
-        //                         className="img-fluid mr-3"
-        //                         style={{ width: '5rem' }}
-        //                         src={currentPlayingMetadta.thumbnail.url}
-        //                         alt={currentPlayingMetadta.title} />
-        //                     <p className="m-0 p-0 text-truncate">{currentPlayingMetadta.title}</p>
-        //                 </div>
-        //                 <div className="d-flex col-6 justify-content-end">
-        //                     <ion-icon name="rewind" style={{ fontSize: '2rem', marginRight: '0.5rem', cursor: 'pointer' }}></ion-icon>
-        //                     <ion-icon
-        //                         onClick={() => this.togglePlayer()}
-        //                         name={currentPlayerObj && currentPlayerObj.playing() ? 'pause' : 'play'}
-        //                         style={{ fontSize: '2rem', cursor: 'pointer' }}></ion-icon>
-        //                     <ion-icon name="fastforward" style={{ fontSize: '2rem', marginLeft: '0.5rem', cursor: 'pointer' }}></ion-icon>
-        //                 </div>
-        //             </div>
-        //         </div>
-        //     )
-        // );
+        const searchData = this.props.searchData;
+        const selectedSong = searchData.selectedSong;
+        const currentPlaying = this.props.currentPlaying;
+        const seek = currentPlaying.seek;
+        const currPlayingSongStatus = currentPlaying.playing;
+        if (!selectedSong) {
+            return <div></div>;
+        }
+        return (
+            <div className="row mt-3"
+                style={{
+                    position: 'sticky',
+                    top: '4rem',
+                    zIndex: 1,
+                    backgroundColor: '#ffff'
+                }} >
+                <div className="col-12">
+                    <div className="card my-2" style={{ cursor: 'pointer' }}
+                        onClick={() => this.onSelectSong(selectedSong)}  >
+                        <div className="d-flex align-items-center">
+                            <img
+                                className="img-fluid mr-3"
+                                src={selectedSong.thumbnail.url}
+                                alt={selectedSong.title} />
+                            <p className="m-0 p-0 text-truncate">{selectedSong.title}</p>
+                        </div>
+                    </div>
+                    {selectedSong.metadata && (
+                        <div className="card-footer text-muted">
+                            <div className="d-flex align-items-center justify-content-between">
+                                <p className="p-0 m-0">
+                                    {selectedSong.metadata.author}
+                                </p>
+                                <div className="d-flex align-items-baseline">
+                                    <p className="p-0 m-0 mr-2">
+                                        {Math.floor(seek / 60)}:{Math.floor(seek % 60)} / {Math.floor(selectedSong.metadata.lengthSeconds / 60)}:{selectedSong.metadata.lengthSeconds % 60}
+                                    </p>
+                                    <Bars status={currPlayingSongStatus} />
+                                </div>
+                            </div>
+                        </div>
+                    )}
+                </div>
+            </div>
+        );
     }
 }
 
-const mapStateToProps = ({ player }) => {
+const mapStateToProps = ({ youtube, player }) => {
     return {
-        player: player
-    }
+        searchData: youtube,
+        playlist: player.playlist,
+        currentPlaying: player.currentPlaying
+    };
 };
 
 const mapDispatchToProps = dispatch => {

@@ -27,7 +27,6 @@ export const handleSongPlay = (song) => {
             });
             const reqObj = {
                 videoId: metadata.videoId,
-                metadata: {},
                 howl: howl
             };
             dispatch({
@@ -36,89 +35,67 @@ export const handleSongPlay = (song) => {
             });
         };
         const playlist = getState().player.playlist;
-        const updatedPlaylist = playlist.map(player => {
-            const updatedPlayer = player;
-            if (updatedPlayer.videoId === song.videoId) {
-                updatedPlayer.howl.playing() ? updatedPlayer.howl.pause() : updatedPlayer.howl.play();
-                return updatedPlayer;
-            }
-            if (updatedPlayer.howl.playing()) {
-                updatedPlayer.howl.stop();
-            }
-            return updatedPlayer;
-        });
-        updatedPlaylist.forEach(player => {
-            // setup event listiners for the new items in the playlist
+        playlist.forEach(player => {
             if (player.howl.state() !== 'loaded') {
-                updateCurrentPlaying('play', player.howl, dispatch, getState);
-                updateCurrentPlaying('pause', player.howl, dispatch, getState);
-                updateCurrentPlaying('stop', player.howl, dispatch, getState);
+                const events = ['play', 'pause', 'stop'];
+                events.forEach(event => dispatch(setupPlayerEvents(event, player.howl)));
             }
         });
-
     }
 }
 
-function updateCurrentPlaying(event, player, dispatch, getState) {
-    player.on(event, () => {
-        switch (event) {
-            case 'play': {
-                const currPlaying = getState().player.currentPlaying;
-                const timer = setIntervalAndExecute(() => {
-                    const seek = player.seek();
-                    if (seek) {
+function setupPlayerEvents(event, player) {
+    return (dispatch, getState) => {
+        player.on(event, () => {
+            switch (event) {
+                case 'play': {
+                    const timer = setIntervalAndExecute(() => {
+                        const seek = player.seek();
                         dispatch({
                             type: UPDATE_CURRENT_PLAYING,
                             payload: {
-                                seek: player.seek(),
-                                timer: timer
+                                seek: seek,
+                                timer: timer,
+                                playing: true,
+                                player: player
                             }
                         });
-                    }
-                }, 1000);
-                // if the song was played before
-                if (currPlaying.seek === 0) {
+                    }, 1000);
+                    break;
+                }
+                case 'pause': {
+                    const currPlaying = getState().player.currentPlaying;
+                    const timer = currPlaying.timer;
+                    clearTimeout(timer);
                     dispatch({
-                        type: SET_CURRENT_PLAYING,
+                        type: UPDATE_CURRENT_PLAYING,
                         payload: {
-                            playing: true,
-                            timer: timer,
+                            playing: false,
                             player: player,
+                            seek: player.seek(),
+                            timer: timer
+                        }
+                    });
+                    break;
+                }
+                case 'stop': {
+                    dispatch({
+                        type: UPDATE_CURRENT_PLAYING,
+                        payload: {
+                            playing: false,
+                            timer: null,
+                            player: null,
                             seek: 0
                         }
                     });
+                    break;
                 }
-                break;
+                default:
+                    return;
             }
-            case 'pause': {
-                const currPlaying = getState().player.currentPlaying;
-                const timer = currPlaying.timer;
-                clearTimeout(timer);
-                dispatch({
-                    type: UPDATE_CURRENT_PLAYING,
-                    payload: {
-                        playing: false
-                    }
-                });
-                break;
-            }
-            case 'stop': {
-                dispatch({
-                    type: SET_CURRENT_PLAYING,
-                    payload: {
-                        playing: false,
-                        timer: null,
-                        player: null,
-                        seek: 0
-                    }
-                });
-                break;
-            }
-            default:
-                return;
-        }
 
-    });
+        });
+    }
 }
 
 function setIntervalAndExecute(callback, t) {

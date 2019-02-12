@@ -9,7 +9,7 @@ import { handleSongPlay } from '../actions/player';
 import { setSelectedSong } from '../actions/youtube';
 
 import Song from '../components/Song';
-import Bars from '../components/Bars';
+import Player from './Player';
 
 class Songs extends Component {
 
@@ -26,47 +26,10 @@ class Songs extends Component {
         if (!videoId || !selectedSong) {
             return <Redirect to="/" />
         }
-        const currentPlaying = this.props.currentPlaying;
-        const seek = currentPlaying.seek;
-        // const currPlayingSongStatus = currPlayingPlayer ? currPlayingPlayer.playing() : false;
-        const currPlayingSongStatus = currentPlaying.playing;
+       
         return (
             <div>
-                <div className="row mt-3"
-                    style={{
-                        position: 'sticky',
-                        top: '4rem',
-                        zIndex: 1,
-                        backgroundColor: '#ffff'
-                    }} >
-                    <div className="col-12">
-                        <div className="card my-2" style={{ cursor: 'pointer' }}
-                            onClick={() => this.onSelectSong(selectedSong)}  >
-                            <div className="d-flex align-items-center">
-                                <img
-                                    className="img-fluid mr-3"
-                                    src={selectedSong.thumbnail.url}
-                                    alt={selectedSong.title} />
-                                <p className="m-0 p-0 text-truncate">{selectedSong.title}</p>
-                            </div>
-                        </div>
-                        {selectedSong.metadata && (
-                            <div className="card-footer text-muted">
-                                <div className="d-flex align-items-center justify-content-between">
-                                    <p className="p-0 m-0">
-                                        {selectedSong.metadata.author}
-                                    </p>
-                                    <div className="d-flex align-items-baseline">
-                                        <p className="p-0 m-0 mr-2">
-                                            {Math.floor(seek / 60)}:{Math.floor(seek % 60)} / {Math.floor(selectedSong.metadata.lengthSeconds / 60)}:{selectedSong.metadata.lengthSeconds % 60}
-                                        </p>
-                                        <Bars status={currPlayingSongStatus} />
-                                    </div>
-                                </div>
-                            </div>
-                        )}
-                    </div>
-                </div>
+                <Player videoId={videoId} />
                 <hr />
                 <div className="row">
                     <div className="col-12 d-flex justify-content-between align-items-center">
@@ -76,7 +39,6 @@ class Songs extends Component {
                         </div>
                     </div>
                 </div>
-
                 <div className="row">
                     {searchData.relatedSearches
                         .map(video => {
