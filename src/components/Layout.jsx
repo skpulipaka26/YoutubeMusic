@@ -16,14 +16,16 @@ const Layout = (props) => {
                 </Navbar.Brand>
                 <AutoComplete></AutoComplete>
             </Navbar>
-            < Container>
-                <Player />
-            </Container>
-            <main>
+            <main style={{marginBottom: '130px'}}>
                 <Container>
                     {props.children}
                 </Container>
             </main>
+            <footer className="fixed-bottom">
+                < Container fluid="true">
+                    <Player />
+                </Container>
+            </footer>
         </div >
     );
 };

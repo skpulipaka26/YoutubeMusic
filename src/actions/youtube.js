@@ -23,7 +23,6 @@ export const fetchYoutubeMetadata = (searchString) => {
                 payload: searchItems
             });
             dispatch(push(`/`));
-            window.scrollTo(0, 0);
         } catch (error) {
             console.log(error);
         }

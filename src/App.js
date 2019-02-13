@@ -9,6 +9,7 @@ import './App.css';
 import Layout from './components/Layout';
 import Home from './containers/Home';
 import Songs from './containers/Songs';
+import Playlist from './containers/Playlist';
 
 class App extends Component {
 
@@ -22,6 +23,7 @@ class App extends Component {
             <Switch>
               <Route exact path="/home" component={Home} />
               <Route exact path="/songs/:id" component={Songs} />
+              <Route exact path="/playlist" component={Playlist} />
               <Redirect exact to="/home" />
             </Switch>
           </Layout>

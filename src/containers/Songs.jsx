@@ -17,7 +17,6 @@ class Songs extends Component {
         if (currentPlayingPlayer && currentPlayingPlayer.playing()) {
             currentPlayingPlayer.stop();
         }
-        window.scrollTo(0, 0);
         const selectedSong = await this.props.setSelectedSong(song);
         const player = await this.props.handleSongPlay(selectedSong);
         if (!player) {
