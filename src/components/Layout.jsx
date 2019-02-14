@@ -5,7 +5,8 @@ import { Container, Navbar, Image } from 'react-bootstrap';
 import AutoComplete from '../containers/AutoComplete';
 
 import logo from '../assets/logo.png';
-import Player from '../containers/Player';
+import Playlist from '../containers/Playlist';
+// import Player from '../containers/Player';
 
 const Layout = (props) => {
     return (
@@ -23,7 +24,7 @@ const Layout = (props) => {
             </main>
             <footer className="fixed-bottom">
                 < Container fluid="true">
-                    <Player />
+                    <Playlist />
                 </Container>
             </footer>
         </div >
