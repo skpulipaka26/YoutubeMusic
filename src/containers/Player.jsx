@@ -53,7 +53,11 @@ class Player extends Component {
         const clickedAt = x / ele.offsetWidth;
         const duration = player.duration();
         const reqSeekValue = clickedAt * duration;
+        if (player.playing()) {
+            player.pause();
+        }
         player.seek(reqSeekValue);
+        player.play();
     }
 
     onPlayer(song) {
@@ -98,7 +102,7 @@ class Player extends Component {
                                         event.persist();
                                         this.onProgress(event, currentPlaying.player);
                                     }}>
-                                    <div className="progress" style={{ height: '0.25rem' }} >
+                                    <div className="progress" style={{ height: '0.25rem' }}>
                                         <div className="progress-bar bg-danger" role="progressbar"
                                             style={this.getProgress(seek, selectedSong.metadata.lengthSeconds)} aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
                                     </div>

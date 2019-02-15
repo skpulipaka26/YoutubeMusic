@@ -6,7 +6,7 @@ export const UPDATE_CURRENT_PLAYING = 'UPDATE_CURRENT_PLAYING';
 export const ADD_SONG_TO_PLAYLIST = 'ADD_SONG_TO_PLAYLIST';
 export const SET_PLAYLIST = 'SET_PLAYLIST';
 
-export const handleSongPlay = (song) => {
+export const addSongToPlaylist = (song) => {
     return async (dispatch, getState) => {
         let extractorData = getState().extractor;
         if (!extractorData.metadata || song.videoId !== extractorData.metadata.videoId) {
@@ -20,33 +20,32 @@ export const handleSongPlay = (song) => {
             if (!reqFormats || !reqFormats.length) {
                 return;
             }
-            const howl = new Howl({
-                src: reqFormats.map(format => format.url),
-                format: reqFormats.map(format => format.mimeType.split(';')[0].split('/')[1]),
-                html5: true
-            });
             const reqObj = {
-                videoId: metadata.videoId,
-                howl: howl
+                ...metadata,
+                formats: reqFormats
             };
             dispatch({
                 type: ADD_SONG_TO_PLAYLIST,
                 payload: reqObj
             });
         };
-        const playlist = getState().player.playlist;
-        playlist.forEach(player => {
-            if (player.howl.state() === 'loading') {
-                const events = ['play', 'pause', 'stop', 'end', 'loaderror', 'playerror'];
-                events.forEach(event => dispatch(setupPlayerEvents(event, player.howl)));
-            }
-        });
-        const reqSongFromPlaylist = playlist.find(player => player.videoId === song.videoId);
-        return reqSongFromPlaylist;
     }
 }
 
-function setupPlayerEvents(event, player) {
+export const setupCurrentPlayingPlayer = (song) => {
+    return dispatch => {
+        const { formats } = song;
+        const howl = new Howl({
+            src: reqFormats.map(format => format.url),
+            format: formats.map(format => format.mimeType.split(';')[0].split('/')[1]),
+            html5: true
+        });
+        const events = ['play', 'pause', 'stop', 'end', 'loaderror', 'playerror'];
+        events.forEach(event => dispatch(setupPlayerEvents(event, howl)));
+    }
+}
+
+export function setupPlayerEvents(event, player) {
     return (dispatch, getState) => {
         player.on(event, () => {
             switch (event) {
@@ -54,7 +53,7 @@ function setupPlayerEvents(event, player) {
                     const timer = setIntervalAndExecute(() => {
                         const seek = player.seek();
                         dispatch({
-                            type: UPDATE_CURRENT_PLAYING,
+                            type: SET_CURRENT_PLAYING,
                             payload: {
                                 seek: seek,
                                 timer: timer,
@@ -102,7 +101,7 @@ function resetPlayer(dispatch, getState) {
         clearTimeout(timer);
     }
     dispatch({
-        type: UPDATE_CURRENT_PLAYING,
+        type: SET_CURRENT_PLAYING,
         payload: {
             playing: false,
             timer: null,

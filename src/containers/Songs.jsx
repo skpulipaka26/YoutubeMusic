@@ -5,7 +5,7 @@ import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { handleSongPlay } from '../actions/player';
+import { addSongToPlaylist } from '../actions/player';
 import { setSelectedSong } from '../actions/youtube';
 
 import Song from '../components/Song';
@@ -18,7 +18,7 @@ class Songs extends Component {
             currentPlayingPlayer.stop();
         }
         const selectedSong = await this.props.setSelectedSong(song);
-        const player = await this.props.handleSongPlay(selectedSong);
+        const player = await this.props.addSongToPlaylist(selectedSong);
         if (!player) {
             return;
         }
@@ -60,7 +60,7 @@ const mapStateToProps = ({ youtube, player: { currentPlaying: { player } } }) =>
 
 const mapDispatchToProps = dispatch => {
     return bindActionCreators({
-        handleSongPlay,
+        addSongToPlaylist,
         setSelectedSong
     }, dispatch);
 }

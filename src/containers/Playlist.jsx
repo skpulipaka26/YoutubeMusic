@@ -20,16 +20,30 @@ class Playlist extends Component {
 
     render() {
         return (
-            <div>
+            <div
+                onClick={() => {
+                    if (this.state.expanded) {
+                        return;
+                    }
+                    this.toggleExpand();
+                }}
+                style={{
+                    transition: 'height 0.5s',
+                    height: this.state.expanded ? 'calc(100vh - 80px)' : '50px'
+                }}>
+                <hr />
                 <div className="row">
-                    <div className="col-12 p-0">
-                        <div
+                    {this.state.expanded && (<div className="col-12">
+                        <button
                             onClick={() => this.toggleExpand()}
-                            style={{
-                                border: '1px solid grey',
-                                transition: 'height 0.5s',
-                                height: this.state.expanded ? '100vh' : '5vh'
-                            }}></div>
+                            type="button" className="close" aria-label="Close">
+                            <span
+                                style={{ fontSize: '1.75rem' }}
+                                aria-hidden="true">&times;</span>
+                        </button>
+                    </div>)}
+                    <div className="col-12">
+
                     </div>
                 </div>
             </div>
