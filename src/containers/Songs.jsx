@@ -8,7 +8,7 @@ import { bindActionCreators } from 'redux';
 import { addSongToPlaylist } from '../actions/player';
 import { setSelectedSong } from '../actions/youtube';
 
-import Song from '../components/Song';
+import Song from './Song';
 
 class Songs extends Component {
 
@@ -32,15 +32,18 @@ class Songs extends Component {
         if (!videoId || !selectedSong) {
             return <Redirect to="/" />
         }
-
         return (
             <div>
                 <div className="row">
+                    <div className="col-12 mt-2">
+                        <Song song={selectedSong} />
+                        <hr />
+                    </div>
                     {searchData.relatedSearches
                         .map(video => {
                             return (
                                 <div className="col-12 my-2" key={video.videoId}>
-                                    <Song {...video} onSelect={(song) => this.onSelectSong(song)} />
+                                    <Song song={video} />
                                 </div>
                             );
                         })}

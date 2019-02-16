@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-import Song from '../components/Song';
+import Song from './Song';
 
 import { extractYoutubeVideo } from '../actions/youtube-extractor';
 import { setSelectedSong } from '../actions/youtube';
@@ -29,7 +29,7 @@ class Home extends Component {
                     {searches.map((song) => {
                         return (
                             <div key={song.videoId} className="col-12 my-2">
-                                <Song {...song} onSelect={(song) => this.onSelectYoutubeVideo(song)} />
+                                <Song song={song} />
                             </div>
                         );
                     })}

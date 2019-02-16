@@ -10,7 +10,6 @@ const YT_SCRAPER_BASE_URL = BACKEND_BASE_URL;
 export const extractYoutubeVideo = (videoId) => {
     return async dispatch => {
         try {
-            dispatch(push(`/songs/${videoId}`));
             const res = await axios.get(`${YT_SCRAPER_BASE_URL}/info/${videoId}`, {
                 params: {
                     relatedList: true

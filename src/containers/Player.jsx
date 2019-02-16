@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import Bars from '../components/Bars';
-import Song from '../components/Song';
+import Song from './Song';
 
 class Player extends Component {
 
@@ -82,38 +82,40 @@ class Player extends Component {
             <div className="row">
                 <div className="col-12 p-0">
                     <div style={{ backgroundColor: 'white' }}>
-                        <Song {...selectedSong} onSelect={(song) => this.onPlayer(song)} />
                         {selectedSong.metadata && (
-                            <div className="card-footer text-muted p-0 px-2">
-                                <div className="d-flex align-items-center justify-content-between">
-                                    <p className="p-0 m-0">
-                                        {selectedSong.metadata.author}
-                                    </p>
-                                    <div className="d-flex align-items-baseline">
-                                        <p className="p-0 m-0 mr-2">
-                                            {Math.floor(seek / 60)}:{Math.floor(seek % 60)} / {Math.floor(selectedSong.metadata.lengthSeconds / 60)}:{selectedSong.metadata.lengthSeconds % 60}
+                            <div>
+                                <Song song={selectedSong} hideActions={false} />
+                                <div className="card-footer text-muted p-0 px-2">
+                                    <div className="d-flex align-items-center justify-content-between">
+                                        <p className="p-0 m-0">
+                                            {selectedSong.metadata.author}
                                         </p>
-                                        <Bars status={currPlayingSongStatus} />
+                                        <div className="d-flex align-items-baseline">
+                                            <p className="p-0 m-0 mr-2">
+                                                {Math.floor(seek / 60)}:{Math.floor(seek % 60)} / {Math.floor(selectedSong.metadata.lengthSeconds / 60)}:{selectedSong.metadata.lengthSeconds % 60}
+                                            </p>
+                                            <Bars status={currPlayingSongStatus} />
+                                        </div>
                                     </div>
-                                </div>
-                                <div
-                                    style={{ cursor: 'pointer' }}
-                                    onClick={(event) => {
-                                        event.persist();
-                                        this.onProgress(event, currentPlaying.player);
-                                    }}>
-                                    <div className="progress" style={{ height: '0.25rem' }}>
-                                        <div className="progress-bar bg-danger" role="progressbar"
-                                            style={this.getProgress(seek, selectedSong.metadata.lengthSeconds)} aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                                    <div
+                                        style={{ cursor: 'pointer' }}
+                                        onClick={(event) => {
+                                            event.persist();
+                                            this.onProgress(event, currentPlaying.player);
+                                        }}>
+                                        <div className="progress" style={{ height: '0.25rem' }}>
+                                            <div className="progress-bar bg-danger" role="progressbar"
+                                                style={this.getProgress(seek, selectedSong.metadata.lengthSeconds)} aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                                        </div>
                                     </div>
-                                </div>
-                                <div className="mt-2">
-                                    <ion-icon
-                                        name={currPlayingSongStatus ? 'pause' : 'play'}
-                                        style={{ fontSize: '2rem', cursor: 'pointer', marginRight: '0.5rem' }} onClick={() => this.onPlayer(selectedSong)} />
-                                    <ion-icon
-                                        name="volume-high"
-                                        style={{ fontSize: '2rem', cursor: 'pointer', marginRight: '0.5rem' }} />
+                                    <div className="mt-2">
+                                        <ion-icon
+                                            name={currPlayingSongStatus ? 'pause' : 'play'}
+                                            style={{ fontSize: '2rem', cursor: 'pointer', marginRight: '0.5rem' }} onClick={() => this.onPlayer(selectedSong)} />
+                                        <ion-icon
+                                            name="volume-high"
+                                            style={{ fontSize: '2rem', cursor: 'pointer', marginRight: '0.5rem' }} />
+                                    </div>
                                 </div>
                             </div>
                         )}

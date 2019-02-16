@@ -5,7 +5,8 @@ import { Container, Navbar, Image } from 'react-bootstrap';
 import AutoComplete from '../containers/AutoComplete';
 
 import logo from '../assets/logo.png';
-import Playlist from '../containers/Playlist';
+// import Player from '../containers/Player';
+// import Playlist from '../containers/Playlist';
 // import Player from '../containers/Player';
 
 const Layout = (props) => {
@@ -17,16 +18,17 @@ const Layout = (props) => {
                 </Navbar.Brand>
                 <AutoComplete></AutoComplete>
             </Navbar>
-            <main style={{marginBottom: '130px'}}>
+            <main>
                 <Container>
+                    {/* <Player /> */}
                     {props.children}
                 </Container>
             </main>
-            <footer className="fixed-bottom">
+            {/* <footer className="fixed-bottom">
                 < Container fluid="true">
                     <Playlist />
                 </Container>
-            </footer>
+            </footer> */}
         </div >
     );
 };

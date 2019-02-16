@@ -15,6 +15,7 @@ export const addSongToPlaylist = (song) => {
         const metadata = extractorData.metadata;
         const currPlaylist = getState().player.playlist;
         const currSongIndex = currPlaylist.findIndex(v => v.videoId === metadata.videoId);
+        // if this is a new song
         if (currSongIndex === -1) {
             const reqFormats = extractorData.formats.reverse();
             if (!reqFormats || !reqFormats.length) {
@@ -28,24 +29,28 @@ export const addSongToPlaylist = (song) => {
                 type: ADD_SONG_TO_PLAYLIST,
                 payload: reqObj
             });
+            return extractorData;
         };
+        return extractorData;
     }
 }
 
-export const setupCurrentPlayingPlayer = (song) => {
+export const setupCurrentPlayingPlayer = (extractorData) => {
     return dispatch => {
-        const { formats } = song;
+        const { formats, metadata } = extractorData;
+        const reqFormats = formats.reverse();
         const howl = new Howl({
             src: reqFormats.map(format => format.url),
             format: formats.map(format => format.mimeType.split(';')[0].split('/')[1]),
             html5: true
         });
         const events = ['play', 'pause', 'stop', 'end', 'loaderror', 'playerror'];
-        events.forEach(event => dispatch(setupPlayerEvents(event, howl)));
+        events.forEach(event => dispatch(setupPlayerEvents(event, metadata.videoId, howl)));
+        return howl;
     }
 }
 
-export function setupPlayerEvents(event, player) {
+export function setupPlayerEvents(event, videoId, player) {
     return (dispatch, getState) => {
         player.on(event, () => {
             switch (event) {
@@ -55,6 +60,7 @@ export function setupPlayerEvents(event, player) {
                         dispatch({
                             type: SET_CURRENT_PLAYING,
                             payload: {
+                                videoId: videoId,
                                 seek: seek,
                                 timer: timer,
                                 playing: true,
@@ -103,6 +109,7 @@ function resetPlayer(dispatch, getState) {
     dispatch({
         type: SET_CURRENT_PLAYING,
         payload: {
+            videoId: null,
             playing: false,
             timer: null,
             player: null,
