@@ -42,9 +42,6 @@ class Playlist extends Component {
                                 aria-hidden="true">&times;</span>
                         </button>
                     </div>)}
-                    <div className="col-12">
-
-                    </div>
                 </div>
             </div>
         );

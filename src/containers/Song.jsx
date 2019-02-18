@@ -1,17 +1,20 @@
 import React, { Component } from 'react';
+import { push } from 'connected-react-router';
 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import { addSongToPlaylist, setupCurrentPlayingPlayer } from '../actions/player';
+import { extractYoutubeVideo } from '../actions/youtube-extractor';
 
 import '../css/song.css';
-
 
 class Song extends Component {
 
     async onCard() {
-        await this.addSongToPlaylist();
+        const song = this.props.song;
+        const extractorData = await this.props.extractYoutubeVideo(song.videoId);
+        this.props.push(`/related/${extractorData.metadata.videoId}`);
     }
 
     async onTogglePlay() {
@@ -87,7 +90,9 @@ const mapStateToProps = ({ player }) => {
 const mapDispatchToProps = dispatch => {
     return bindActionCreators({
         addSongToPlaylist,
-        setupCurrentPlayingPlayer
+        setupCurrentPlayingPlayer,
+        extractYoutubeVideo,
+        push
     }, dispatch);
 }
 

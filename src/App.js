@@ -8,7 +8,7 @@ import './App.css';
 
 import Layout from './components/Layout';
 import Home from './containers/Home';
-import Songs from './containers/Songs';
+import Related from './containers/Related';
 
 class App extends Component {
 
@@ -21,7 +21,7 @@ class App extends Component {
           <Layout>
             <Switch>
               <Route exact path="/home" component={Home} />
-              <Route exact path="/songs/:id" component={Songs} />
+              <Route exact path="/related/:id" component={Related} />
               <Redirect exact to="/home" />
             </Switch>
           </Layout>

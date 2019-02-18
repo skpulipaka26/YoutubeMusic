@@ -1,29 +1,15 @@
 import React, { Component } from 'react';
 
-import { Redirect } from 'react-router-dom';
-
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { addSongToPlaylist } from '../actions/player';
-import { setSelectedSong } from '../actions/youtube';
+import { Redirect } from 'react-router-dom';
+
+import { extractYoutubeVideo } from '../actions/youtube-extractor';
 
 import Song from './Song';
 
-class Songs extends Component {
-
-    async onSelectSong(song) {
-        const currentPlayingPlayer = this.props.currentPlayingPlayer;
-        if (currentPlayingPlayer && currentPlayingPlayer.playing()) {
-            currentPlayingPlayer.stop();
-        }
-        const selectedSong = await this.props.setSelectedSong(song);
-        const player = await this.props.addSongToPlaylist(selectedSong);
-        if (!player) {
-            return;
-        }
-        player.howl.play();
-    }
+class Related extends Component {
 
     render() {
         const videoId = this.props.match.params.id;
@@ -63,12 +49,11 @@ const mapStateToProps = ({ youtube, player: { currentPlaying: { player } } }) =>
 
 const mapDispatchToProps = dispatch => {
     return bindActionCreators({
-        addSongToPlaylist,
-        setSelectedSong
+        extractYoutubeVideo
     }, dispatch);
 }
 
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(Songs);
+)(Related);
