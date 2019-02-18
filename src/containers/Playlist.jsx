@@ -3,54 +3,32 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
+import Song from '../containers/Song';
+
 class Playlist extends Component {
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            expanded: false
-        };
-    }
-
-    toggleExpand() {
-        this.setState({
-            expanded: !this.state.expanded
-        });
+    queuePlaylist(player) {
+        const playlist = this.props.playlist;
+        const currPlayerIndex = playlist.findIndex(song => song.videoId === player.videoId);
+        const nextSongIndex = currPlayerIndex + 1 > playlist.length ? 0 : currPlayerIndex + 1;
+        console.log(nextSongIndex);
     }
 
     render() {
-        return (
-            <div
-                onClick={() => {
-                    if (this.state.expanded) {
-                        return;
-                    }
-                    this.toggleExpand();
-                }}
-                style={{
-                    transition: 'height 0.5s',
-                    height: this.state.expanded ? 'calc(100vh - 80px)' : '50px'
-                }}>
-                <hr />
-                <div className="row">
-                    {this.state.expanded && (<div className="col-12">
-                        <button
-                            onClick={() => this.toggleExpand()}
-                            type="button" className="close" aria-label="Close">
-                            <span
-                                style={{ fontSize: '1.75rem' }}
-                                aria-hidden="true">&times;</span>
-                        </button>
-                    </div>)}
+        return this.props.playlist.map(song => {
+            return (
+                <div className="my-2" key={song.videoId}>
+                    <Song song={song} />
                 </div>
-            </div>
-        );
+            );
+        });
     }
-
 }
 
-const mapStateToProps = ({ player }) => {
-    return player;
+const mapStateToProps = ({ player: { playlist } }) => {
+    return {
+        playlist: playlist
+    };
 }
 
 const mapDispatchToProps = dispatch => {

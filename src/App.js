@@ -9,6 +9,7 @@ import './App.css';
 import Layout from './components/Layout';
 import Home from './containers/Home';
 import Related from './containers/Related';
+import Playlist from './containers/Playlist';
 
 class App extends Component {
 
@@ -22,10 +23,10 @@ class App extends Component {
             <Switch>
               <Route exact path="/home" component={Home} />
               <Route exact path="/related/:id" component={Related} />
+              <Route exact path="/playlist" component={Playlist} />
               <Redirect exact to="/home" />
             </Switch>
           </Layout>
-
         </ConnectedRouter>
       </BrowserRouter>
     );

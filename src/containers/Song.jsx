@@ -76,7 +76,7 @@ class Song extends Component {
                         </div>
                     )}
                 </div>
-            </div >
+            </div>
         );
     }
 };
