@@ -22,19 +22,10 @@ const Layout = (props) => {
             </Navbar>
             <main style={{ marginBottom: '50px' }}>
                 <Container>
+                    <Player />
                     {props.children}
                 </Container>
             </main>
-            <footer style={{
-                backgroundColor: 'white',
-                position: 'fixed',
-                bottom: '0px',
-                width: '100vw'
-            }}>
-                < Container fluid="true">
-                    <Player />
-                </Container>
-            </footer>
         </div >
     );
 };
