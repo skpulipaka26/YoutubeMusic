@@ -6,7 +6,7 @@ export const UPDATE_CURRENT_PLAYING = 'UPDATE_CURRENT_PLAYING';
 export const ADD_SONG_TO_PLAYLIST = 'ADD_SONG_TO_PLAYLIST';
 export const SET_PLAYLIST = 'SET_PLAYLIST';
 
-export const handleSongPlay = (song) => {
+export const addSongToPlaylist = (song) => {
     return async (dispatch, getState) => {
         let extractorData = getState().extractor;
         if (!extractorData.metadata || song.videoId !== extractorData.metadata.videoId) {
@@ -15,38 +15,42 @@ export const handleSongPlay = (song) => {
         const metadata = extractorData.metadata;
         const currPlaylist = getState().player.playlist;
         const currSongIndex = currPlaylist.findIndex(v => v.videoId === metadata.videoId);
+        // if this is a new song
         if (currSongIndex === -1) {
             const reqFormats = extractorData.formats.reverse();
             if (!reqFormats || !reqFormats.length) {
                 return;
             }
-            const howl = new Howl({
-                src: reqFormats.map(format => format.url),
-                format: reqFormats.map(format => format.mimeType.split(';')[0].split('/')[1]),
-                html5: true
-            });
             const reqObj = {
-                videoId: metadata.videoId,
-                howl: howl
+                ...metadata,
+                formats: reqFormats
             };
             dispatch({
                 type: ADD_SONG_TO_PLAYLIST,
                 payload: reqObj
             });
+            return extractorData;
         };
-        const playlist = getState().player.playlist;
-        playlist.forEach(player => {
-            if (player.howl.state() === 'loading') {
-                const events = ['play', 'pause', 'stop', 'end', 'loaderror', 'playerror'];
-                events.forEach(event => dispatch(setupPlayerEvents(event, player.howl)));
-            }
-        });
-        const reqSongFromPlaylist = playlist.find(player => player.videoId === song.videoId);
-        return reqSongFromPlaylist;
+        return extractorData;
     }
 }
 
-function setupPlayerEvents(event, player) {
+export const setupCurrentPlayingPlayer = (extractorData) => {
+    return dispatch => {
+        const { formats, metadata } = extractorData;
+        const reqFormats = formats.reverse();
+        const howl = new Howl({
+            src: reqFormats.map(format => format.url),
+            format: formats.map(format => format.mimeType.split(';')[0].split('/')[1]),
+            html5: true
+        });
+        const events = ['play', 'pause', 'stop', 'end', 'loaderror', 'playerror'];
+        events.forEach(event => dispatch(setupPlayerEvents(event, metadata.videoId, howl)));
+        return howl;
+    }
+}
+
+export function setupPlayerEvents(event, videoId, player) {
     return (dispatch, getState) => {
         player.on(event, () => {
             switch (event) {
@@ -54,8 +58,9 @@ function setupPlayerEvents(event, player) {
                     const timer = setIntervalAndExecute(() => {
                         const seek = player.seek();
                         dispatch({
-                            type: UPDATE_CURRENT_PLAYING,
+                            type: SET_CURRENT_PLAYING,
                             payload: {
+                                videoId: videoId,
                                 seek: seek,
                                 timer: timer,
                                 playing: true,
@@ -81,10 +86,21 @@ function setupPlayerEvents(event, player) {
                     break;
                 }
                 case 'stop':
-                case 'end':
                 case 'loaderror':
                 case 'playerror': {
                     resetPlayer(dispatch, getState);
+                    break;
+                }
+                case 'end': {
+                    // reset the current player and play the next song
+                    resetPlayer(dispatch, getState);
+                    const nextSong = getNextSong(videoId, getState);
+                    const { formats, ...metadata } = nextSong;
+                    const player = dispatch(setupCurrentPlayingPlayer({
+                        metadata: metadata,
+                        formats: formats
+                    }));
+                    player.play();
                     break;
                 }
                 default:
@@ -102,14 +118,22 @@ function resetPlayer(dispatch, getState) {
         clearTimeout(timer);
     }
     dispatch({
-        type: UPDATE_CURRENT_PLAYING,
+        type: SET_CURRENT_PLAYING,
         payload: {
+            videoId: null,
             playing: false,
             timer: null,
             player: null,
             seek: 0
         }
     });
+}
+
+function getNextSong(videoId, getState) {
+    const playlist = getState().player.playlist;
+    const currPlayerIndex = playlist.findIndex(song => song.videoId === videoId);
+    const nextSongIndex = currPlayerIndex + 1 === playlist.length ? 0 : currPlayerIndex + 1;
+    return playlist[nextSongIndex];
 }
 
 function setIntervalAndExecute(callback, t) {

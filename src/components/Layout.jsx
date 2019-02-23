@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { Link } from 'react-router-dom';
+
 import { Container, Navbar, Image } from 'react-bootstrap';
 
 import AutoComplete from '../containers/AutoComplete';
@@ -12,15 +14,15 @@ const Layout = (props) => {
         <div>
             <Navbar bg="dark" variant="dark" sticky="top">
                 <Navbar.Brand>
-                    <Image src={logo} fluid style={{ width: '50px' }} />
+                    <Link to="/">
+                        <Image src={logo} fluid style={{ width: '50px' }} />
+                    </Link>
                 </Navbar.Brand>
                 <AutoComplete></AutoComplete>
             </Navbar>
-            < Container>
-                <Player />
-            </Container>
-            <main>
+            <main style={{ marginBottom: '50px' }}>
                 <Container>
+                    <Player />
                     {props.children}
                 </Container>
             </main>

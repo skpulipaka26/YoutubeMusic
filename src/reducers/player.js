@@ -2,6 +2,7 @@ import { ADD_SONG_TO_PLAYLIST, SET_PLAYLIST, SET_CURRENT_PLAYING, UPDATE_CURRENT
 
 const initialState = {
     currentPlaying: {
+        videoId: null,
         seek: 0,
         player: null,
         timer: null,

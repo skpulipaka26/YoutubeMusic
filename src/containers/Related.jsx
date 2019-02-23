@@ -1,30 +1,15 @@
 import React, { Component } from 'react';
 
-import { Redirect } from 'react-router-dom';
-
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { handleSongPlay } from '../actions/player';
-import { setSelectedSong } from '../actions/youtube';
+import { Redirect } from 'react-router-dom';
 
-import Song from '../components/Song';
+import { extractYoutubeVideo } from '../actions/youtube-extractor';
 
-class Songs extends Component {
+import Song from './Song';
 
-    async onSelectSong(song) {
-        const currentPlayingPlayer = this.props.currentPlayingPlayer;
-        if (currentPlayingPlayer && currentPlayingPlayer.playing()) {
-            currentPlayingPlayer.stop();
-        }
-        window.scrollTo(0, 0);
-        const selectedSong = await this.props.setSelectedSong(song);
-        const player = await this.props.handleSongPlay(selectedSong);
-        if (!player) {
-            return;
-        }
-        player.howl.play();
-    }
+class Related extends Component {
 
     render() {
         const videoId = this.props.match.params.id;
@@ -33,15 +18,18 @@ class Songs extends Component {
         if (!videoId || !selectedSong) {
             return <Redirect to="/" />
         }
-
         return (
             <div>
                 <div className="row">
+                    <div className="col-12 mt-2">
+                        <Song song={selectedSong} />
+                        <hr />
+                    </div>
                     {searchData.relatedSearches
                         .map(video => {
                             return (
                                 <div className="col-12 my-2" key={video.videoId}>
-                                    <Song {...video} onSelect={(song) => this.onSelectSong(song)} />
+                                    <Song song={video} />
                                 </div>
                             );
                         })}
@@ -61,12 +49,11 @@ const mapStateToProps = ({ youtube, player: { currentPlaying: { player } } }) =>
 
 const mapDispatchToProps = dispatch => {
     return bindActionCreators({
-        handleSongPlay,
-        setSelectedSong
+        extractYoutubeVideo
     }, dispatch);
 }
 
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(Songs);
+)(Related);

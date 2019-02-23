@@ -3,11 +3,11 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-import Song from '../components/Song';
+import Song from './Song';
 
 import { extractYoutubeVideo } from '../actions/youtube-extractor';
 import { setSelectedSong } from '../actions/youtube';
-import { handleSongPlay } from '../actions/player';
+import { addSongToPlaylist } from '../actions/player';
 
 class Home extends Component {
 
@@ -17,7 +17,7 @@ class Home extends Component {
             currentPlayingPlayer.stop()
         }
         this.props.setSelectedSong(song);
-        this.props.handleSongPlay(song);
+        this.props.addSongToPlaylist(song);
         this.props.extractYoutubeVideo(song.videoId);
     }
 
@@ -29,7 +29,7 @@ class Home extends Component {
                     {searches.map((song) => {
                         return (
                             <div key={song.videoId} className="col-12 my-2">
-                                <Song {...song} onSelect={(song) => this.onSelectYoutubeVideo(song)} />
+                                <Song song={song} />
                             </div>
                         );
                     })}
@@ -50,7 +50,7 @@ const mapDispatchToProps = dispatch => {
     return bindActionCreators({
         extractYoutubeVideo,
         setSelectedSong,
-        handleSongPlay
+        addSongToPlaylist
     }, dispatch);
 }
 
