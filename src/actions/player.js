@@ -86,10 +86,21 @@ export function setupPlayerEvents(event, videoId, player) {
                     break;
                 }
                 case 'stop':
-                case 'end':
                 case 'loaderror':
                 case 'playerror': {
                     resetPlayer(dispatch, getState);
+                    break;
+                }
+                case 'end': {
+                    // reset the current player and play the next song
+                    resetPlayer(dispatch, getState);
+                    const nextSong = getNextSong(videoId, getState);
+                    const { formats, ...metadata } = nextSong;
+                    const player = dispatch(setupCurrentPlayingPlayer({
+                        metadata: metadata,
+                        formats: formats
+                    }));
+                    player.play();
                     break;
                 }
                 default:
@@ -116,6 +127,13 @@ function resetPlayer(dispatch, getState) {
             seek: 0
         }
     });
+}
+
+function getNextSong(videoId, getState) {
+    const playlist = getState().player.playlist;
+    const currPlayerIndex = playlist.findIndex(song => song.videoId === videoId);
+    const nextSongIndex = currPlayerIndex + 1 === playlist.length ? 0 : currPlayerIndex + 1;
+    return playlist[nextSongIndex];
 }
 
 function setIntervalAndExecute(callback, t) {

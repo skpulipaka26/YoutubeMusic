@@ -27,13 +27,16 @@ class Song extends Component {
             }
             currentPlaying.player.stop();
         }
-        const extractorData = await this.addSongToPlaylist(song);
+        const extractorData = await this.addSongToPlaylist();
         const player = await this.props.setupCurrentPlayingPlayer(extractorData);
         player.play();
     }
 
-    async addSongToPlaylist() {
+    async addSongToPlaylist(navigate = false) {
         const song = this.props.song;
+        if (navigate) {
+            this.props.push('/playlist');
+        }
         return await this.props.addSongToPlaylist(song);
     }
 

@@ -7,13 +7,6 @@ import Song from '../containers/Song';
 
 class Playlist extends Component {
 
-    queuePlaylist(player) {
-        const playlist = this.props.playlist;
-        const currPlayerIndex = playlist.findIndex(song => song.videoId === player.videoId);
-        const nextSongIndex = currPlayerIndex + 1 > playlist.length ? 0 : currPlayerIndex + 1;
-        console.log(nextSongIndex);
-    }
-
     render() {
         return this.props.playlist.map(song => {
             return (
